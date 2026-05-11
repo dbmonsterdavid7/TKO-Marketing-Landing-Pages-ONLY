@@ -392,12 +392,15 @@ export default function Contractors() {
                   "Google Business Profile Overhaul for more local visibility",
                   "Super Quick onboarding — we handle everything in 7 days",
                   "Ongoing local SEO and speed-to-lead monitoring"
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
-                    <span className="text-[#a60724] font-black mt-0.5 shrink-0">—</span>
-                    <span className={`${feature.startsWith("Free High Converting Website") ? "text-green-500" : "text-zinc-300"} text-sm md:text-base font-medium`}>{feature}</span>
-                  </div>
-                ))}
+                ].map((feature, i) => {
+                  const isFreeWebsite = feature.startsWith("Free High Converting Website");
+                  return (
+                    <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
+                      <span className={`${isFreeWebsite ? "text-green-500" : "text-[#a60724]"} font-black mt-0.5 shrink-0`}>—</span>
+                      <span className={`${isFreeWebsite ? "text-green-500" : "text-zinc-300"} text-sm md:text-base font-medium`}>{feature}</span>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="text-center">
@@ -409,19 +412,6 @@ export default function Contractors() {
                 </button>
               </div>
 
-              <div className="mt-8 bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
-                <div className="w-10 h-10 bg-[#a60724]/10 flex items-center justify-center rounded-xl shrink-0" >
-                  <ShieldCheck className="w-6 h-6 text-[#a60724]" />
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-black uppercase tracking-tight mb-1">
-                    No-Risk Contractor Guarantee
-                  </h4>
-                  <p className="text-zinc-500 text-xs leading-relaxed">
-                    if our system doesn't save at least one lead in your first 30 days, we'll refund your subscription. You literally have more to lose by staying on a job site with your phone in the truck.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
