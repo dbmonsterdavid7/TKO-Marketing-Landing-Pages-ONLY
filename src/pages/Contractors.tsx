@@ -12,6 +12,7 @@ import {
   Smartphone,
   Users,
   CheckCircle2,
+  Check,
   Calendar,
   Search,
   Sparkles,
@@ -396,7 +397,7 @@ export default function Contractors() {
                   const isFreeWebsite = feature.startsWith("Free High Converting Website");
                   return (
                     <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
-                      <span className={`${isFreeWebsite ? "text-green-500" : "text-[#a60724]"} font-black mt-0.5 shrink-0`}>—</span>
+                      <Check className={`${isFreeWebsite ? "text-green-500" : "text-[#a60724]"} w-5 h-5 mt-0.5 shrink-0`} />
                       <span className={`${isFreeWebsite ? "text-green-500" : "text-zinc-300"} text-sm md:text-base font-medium`}>{feature}</span>
                     </div>
                   );
