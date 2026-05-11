@@ -385,9 +385,9 @@ export default function Contractors() {
 
               <div className="max-w-2xl mx-auto mb-10">
                 {[
+                  "Free High Converting Website — optimized for mobile/tablet",
                   "Trades-Specific Missed Call Text-Back System",
                   "Automatic Customer Review Collector — rank on the front page of Google",
-                  "High-Converting Sales Website — optimized for mobile/tablet",
                   "Online Job Request & Quote Forms",
                   "Google Business Profile Overhaul for more local visibility",
                   "Super Quick onboarding — we handle everything in 7 days",
@@ -395,7 +395,7 @@ export default function Contractors() {
                 ].map((feature, i) => (
                   <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
                     <span className="text-[#a60724] font-black mt-0.5 shrink-0">—</span>
-                    <span className="text-zinc-300 text-sm md:text-base font-medium">{feature}</span>
+                    <span className={`${feature.startsWith("Free High Converting Website") ? "text-green-500" : "text-zinc-300"} text-sm md:text-base font-medium`}>{feature}</span>
                   </div>
                 ))}
               </div>
