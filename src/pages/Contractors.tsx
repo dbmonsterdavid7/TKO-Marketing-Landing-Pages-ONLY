@@ -336,13 +336,13 @@ export default function Contractors() {
                 <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${!isAnnual ? "text-[#a60724]" : "text-zinc-500"}`}>Monthly</span>
                 <button 
                   onClick={() => setIsAnnual(!isAnnual)}
-                  className={`w-12 h-6 bg-zinc-800 rounded-full relative flex items-center p-1 transition-all duration-500 border hover:border-zinc-500 ${isAnnual ? "shadow-[0_0_20px_rgba(166,7,36,0.6)] border-[#a60724]/50" : "border-zinc-700"}`}
+                  className={`w-12 h-6 bg-zinc-800 rounded-full relative flex items-center p-1 transition-all duration-500 border hover:border-zinc-500 ${isAnnual ? "shadow-[0_0_20px_rgba(34,197,94,0.6)] border-green-500/50" : "border-zinc-700"}`}
                 >
-                  <div className={`w-4 h-4 bg-[#a60724] rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(166,7,36,0.3)] ${isAnnual ? "translate-x-6" : "translate-x-0"}`} />
+                  <div className={`w-4 h-4 ${isAnnual ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.3)]" : "bg-[#a60724] shadow-[0_0_10px_rgba(166,7,36,0.3)]"} rounded-full transition-all duration-300 ${isAnnual ? "translate-x-6" : "translate-x-0"}`} />
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isAnnual ? "text-[#a60724]" : "text-zinc-500"}`}>Annual</span>
-                  <span className="bg-[#a60724] text-zinc-900 text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_15px_rgba(166,7,36,0.4)] animate-pulse">SAVE 25%</span>
+                  <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isAnnual ? "text-green-500" : "text-zinc-500"}`}>Annual</span>
+                  <span className="bg-green-500 text-zinc-900 text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_15px_rgba(34,197,94,0.4)] animate-pulse">SAVE 25%</span>
                 </div>
               </div>
 
