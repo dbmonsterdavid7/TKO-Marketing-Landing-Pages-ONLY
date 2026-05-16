@@ -17,9 +17,7 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // If you want to hide navigation on specific pages, do it here AFTER all hooks
-  // But typically you want it on all pages for a multi-page site.
-  // We'll keep it visible on wellness and contractors now that it's the global nav.
+  if (isWellness || isContractors) return null;
   
   const accentColor = '#a60724';
 
