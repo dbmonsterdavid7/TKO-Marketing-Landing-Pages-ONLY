@@ -9,12 +9,6 @@ export function Navigation() {
   const isWellness = location.pathname === '/wellness' || hostname.startsWith('wellness.');
   const isContractors = location.pathname === '/contractors' || location.pathname === '/';
 
-  if (isWellness || isContractors) return null;
-  
-  const accentColor = '#a60724';
-  const accentShadow = 'rgba(166,7,36,0.5)';
-  const accentShadowHover = 'rgba(166,7,36,0.6)';
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -22,6 +16,12 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // If you want to hide navigation on specific pages, do it here AFTER all hooks
+  // But typically you want it on all pages for a multi-page site.
+  // We'll keep it visible on wellness and contractors now that it's the global nav.
+  
+  const accentColor = '#a60724';
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${
