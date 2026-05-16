@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { Navigation } from "../components/Navigation";
-import { Footer } from "../components/Footer";
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -53,7 +51,6 @@ export default function PrivacyPolicy() {
 
   return (
     <>
-      <Navigation />
       
       <style dangerouslySetInnerHTML={{ __html: `
         :root {
@@ -484,7 +481,6 @@ export default function PrivacyPolicy() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

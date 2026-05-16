@@ -1,10 +1,12 @@
-import { HashRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Wellness from "./pages/Wellness";
 import Contractors from "./pages/Contractors";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import { ParticleBackground } from "./components/ParticleBackground";
+import { Navigation } from "./components/Navigation";
+import { Footer } from "./components/Footer";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -45,6 +47,8 @@ function AppContent() {
       <ScrollToTop />
       <ParticleBackground />
 
+      <Navigation />
+
       {/* Global Grid Lines */}
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-0 overflow-hidden">
         <svg
@@ -67,15 +71,19 @@ function AppContent() {
         </svg>
       </div>
 
-      <Routes>
-        <Route path="/" element={isWellnessSubdomain ? <Wellness /> : <Contractors />} />
-        <Route path="/wellness" element={<Wellness />} />
-        <Route path="/contractors" element={<Contractors />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfUse />} />
-        <Route path="/terms-of-use" element={<TermsOfUse />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={isWellnessSubdomain ? <Wellness /> : <Contractors />} />
+          <Route path="/wellness" element={<Wellness />} />
+          <Route path="/contractors" element={<Contractors />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfUse />} />
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
+        </Routes>
+      </main>
+
+      <Footer />
     </div>
   );
 }

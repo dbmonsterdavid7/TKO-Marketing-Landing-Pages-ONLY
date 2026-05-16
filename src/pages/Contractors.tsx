@@ -22,8 +22,6 @@ import {
   Hammer,
   Truck
 } from "lucide-react";
-import { Navigation } from "../components/Navigation";
-import { Footer } from "../components/Footer";
 
 interface AccordionItemProps {
   title: string;
@@ -498,7 +496,6 @@ export default function Contractors() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

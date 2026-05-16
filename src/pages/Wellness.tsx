@@ -12,6 +12,7 @@ import {
   Smartphone,
   Users,
   CheckCircle2,
+  Check,
   Calendar,
   Search,
   Sparkles,
@@ -19,8 +20,6 @@ import {
   Star,
   ShieldCheck
 } from "lucide-react";
-import { Navigation } from "../components/Navigation";
-import { Footer } from "../components/Footer";
 
 interface AccordionItemProps {
   title: string;
@@ -386,19 +385,22 @@ export default function Wellness() {
 
               <div className="max-w-2xl mx-auto mb-10">
                 {[
+                  "Free High Converting Professional Website — built and hosted for you",
                   "Missed Call Text-Back System — connected to your business number",
                   "Automated Google Review Funnel — sent after every appointment",
-                  "Custom Professional Website — built and hosted for you",
                   "Online Booking Calendar or Appointment Request Form",
                   "Google Business Profile Optimization (one-time, on signup)",
                   "Full setup and onboarding — done for you within 7-10 days",
                   "Ongoing system monitoring and support"
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
-                    <span className="text-[#a60724] font-black mt-0.5 shrink-0">—</span>
-                    <span className="text-zinc-300 text-sm md:text-base font-medium">{feature}</span>
-                  </div>
-                ))}
+                ].map((feature, i) => {
+                  const isFreeWebsite = feature.startsWith("Free High Converting");
+                  return (
+                    <div key={i} className="flex items-start gap-4 py-3 border-b border-zinc-800/50 group">
+                      <Check className={`${isFreeWebsite ? "text-green-500" : "text-[#a60724]"} w-5 h-5 mt-0.5 shrink-0`} />
+                      <span className={`${isFreeWebsite ? "text-green-500" : "text-zinc-300"} text-sm md:text-base font-medium`}>{feature}</span>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="text-center">
@@ -498,7 +500,6 @@ export default function Wellness() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }
