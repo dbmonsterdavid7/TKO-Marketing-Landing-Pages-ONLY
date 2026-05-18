@@ -137,15 +137,15 @@ export default function Contractors() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-4 md:pt-12 pb-8 md:pb-20 px-6 overflow-hidden">
+      <section className="relative z-10 pt-4 md:pt-12 pb-4 md:pb-8 px-6 overflow-hidden">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tight mb-8 bg-gradient-to-br from-zinc-900 to-zinc-500 bg-clip-text text-transparent">
-              Every Missed Call Is a Job <br className="hidden md:block" /> You're Giving to Your Competitor
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-8 bg-gradient-to-br from-zinc-900 to-zinc-500 bg-clip-text text-transparent leading-[1.1]">
+              We Get Contractors More Jobs Using AI, Smart Websites, and 5-Star Review Systems — Just $269/mo
             </h1>
             <h2 className="text-base md:text-xl font-normal text-zinc-600 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
               When you're on a job or driving, <strong>missed calls are lost leads.</strong> Our system texts them back in 60 seconds — automatically — so you book the job before they call the next guy on Google.
@@ -156,29 +156,33 @@ export default function Contractors() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="relative max-w-lg mx-auto py-12"
+            className="relative max-w-2xl mx-auto py-4 md:py-6"
           >
-            <img 
-              src="https://lh3.googleusercontent.com/d/1sho8dWDi-MCebAi3XaxFl6Lrh0VK8ZPj" 
-              alt="Takeover Marketing Logo" 
-              className="w-full h-auto drop-shadow-2xl"
-              referrerPolicy="no-referrer"
-            />
+            <div className="aspect-video w-full rounded-2xl shadow-2xl overflow-hidden border border-zinc-100/10">
+              <iframe
+                src="https://player.vimeo.com/video/1193100427?autoplay=1&loop=1&muted=1"
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Takeover Marketing Video"
+              ></iframe>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Action Section */}
-      <section className="bg-white pt-8 md:pt-24 pb-16 md:pb-24 px-6 relative z-10 border-y border-zinc-100">
+      <section className="bg-white pt-6 md:pt-12 pb-16 md:pb-24 px-6 relative z-10 border-y border-zinc-100">
         <div className="max-w-3xl mx-auto text-center">
           <button 
             onClick={scrollToBooking}
             className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all shadow-[0_10px_40px_-10px_rgba(166,7,36,0.5)] active:scale-95 mb-8 md:mb-12 animate-glow"
           >
-            Stop losing customers
+            I Want More Jobs
           </button>
           <p className="text-xl md:text-2xl text-zinc-900 leading-relaxed">
-            It's a <span className="font-bold border-b-2 border-[#a60724]">hands-free lead capture system</span> designed specifically move the needle for HVAC, plumbing, landscaping, and home service businesses.
+            It's a <span className="font-bold border-b-2 border-[#a60724]">hands-free lead capture system</span> designed specifically to move the needle for home service businesses such as HVAC, plumbing, and landscapers.
           </p>
         </div>
       </section>
@@ -287,7 +291,7 @@ export default function Contractors() {
                 onClick={scrollToBooking}
                 className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all shadow-[0_10px_40px_-10px_rgba(166,7,36,0.5)] active:scale-95 animate-glow"
               >
-                Stop losing customers
+                I Want More Jobs
               </button>
             </div>
           </motion.div>
@@ -407,7 +411,7 @@ export default function Contractors() {
                   onClick={scrollToBooking}
                   className="w-full bg-[#a60724] hover:bg-[#8b061e] text-white py-5 rounded-xl text-base md:text-lg font-black uppercase tracking-widest transition-all shadow-xl active:scale-95 animate-glow"
                 >
-                  Stop losing customers
+                  I Want More Jobs
                 </button>
               </div>
 
@@ -490,7 +494,7 @@ export default function Contractors() {
               onClick={scrollToBooking}
               className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all animate-glow"
             >
-              Stop losing customers
+              I Want More Jobs
             </button>
           </div>
         </div>

@@ -152,19 +152,22 @@ export default function Wellness() {
             </h2>
           </motion.div>
 
-          {/* Takeover Marketing Logo */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="relative max-w-lg mx-auto py-12"
+            className="relative max-w-2xl mx-auto py-12"
           >
-            <img 
-              src="https://lh3.googleusercontent.com/d/1sho8dWDi-MCebAi3XaxFl6Lrh0VK8ZPj" 
-              alt="Takeover Marketing Logo" 
-              className="w-full h-auto drop-shadow-2xl"
-              referrerPolicy="no-referrer"
-            />
+            <div className="aspect-video w-full rounded-2xl shadow-2xl overflow-hidden border border-zinc-100/10">
+              <iframe
+                src="https://player.vimeo.com/video/1193100427?autoplay=1&loop=1&muted=1"
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Takeover Marketing Video"
+              ></iframe>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -176,7 +179,7 @@ export default function Wellness() {
             onClick={scrollToBooking}
             className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all shadow-[0_10px_40px_-10px_rgba(166,7,36,0.5)] active:scale-95 mb-8 md:mb-12"
           >
-            STOP LOSING CUSTOMERS - $269/mo
+            I Want More Jobs
           </button>
           <p className="text-xl md:text-2xl text-zinc-900 leading-relaxed">
             It's a <span className="font-bold border-b-2 border-[#a60724]">fully automated acquisition system</span> designed specifically to capture every missed call and turn them into loyal, repeat customers for your wellness business.
@@ -288,7 +291,7 @@ export default function Wellness() {
                 onClick={scrollToBooking}
                 className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all shadow-[0_10px_40px_-10px_rgba(166,7,36,0.5)] active:scale-95"
               >
-                STOP LOSING CUSTOMERS - $269/mo
+                I Want More Jobs
               </button>
             </div>
           </motion.div>
@@ -494,7 +497,7 @@ export default function Wellness() {
               onClick={scrollToBooking}
               className="w-full md:w-auto px-10 py-5 rounded-xl bg-[#a60724] hover:bg-[#8b061e] text-white text-lg md:text-xl font-black uppercase tracking-wider transition-all"
             >
-              STOP LOSING CUSTOMERS - $269/mo
+              I Want More Jobs
             </button>
           </div>
         </div>
