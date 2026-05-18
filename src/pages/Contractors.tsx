@@ -148,7 +148,7 @@ export default function Contractors() {
               We Get Contractors More Jobs Using AI, Smart Websites, and 5-Star Review Systems — Just $269/mo
             </h1>
             <h2 className="text-base md:text-xl font-normal text-zinc-600 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
-              When you're on a job or driving, <strong>missed calls are lost leads.</strong> Our system texts them back in 60 seconds — automatically — so you book the job before they call the next guy on Google.
+              Missed a call on the job? Our system texts them back in 60 seconds so you book it before they call your competitor.
             </h2>
           </motion.div>
 
