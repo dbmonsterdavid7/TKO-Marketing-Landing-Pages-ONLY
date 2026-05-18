@@ -99,7 +99,7 @@ export default function Contractors() {
                     />
                   ))}
                 </span>
-                <span className="text-[#a60724] font-bold">(84)</span>
+                <span className="text-[#a60724] font-bold">(126)</span>
               </p>
               {/* Duplicate for seamless scroll */}
               <p className="text-white text-[12px] font-bold tracking-wide flex items-center gap-x-2">
@@ -113,7 +113,7 @@ export default function Contractors() {
                     />
                   ))}
                 </span>
-                <span className="text-[#a60724] font-bold">(84)</span>
+                <span className="text-[#a60724] font-bold">(126)</span>
               </p>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function Contractors() {
                 />
               ))}
             </span>
-            <span className="text-[#a60724] font-bold">(84)</span>
+            <span className="text-[#a60724] font-bold">(126)</span>
           </p>
         </div>
       </div>
