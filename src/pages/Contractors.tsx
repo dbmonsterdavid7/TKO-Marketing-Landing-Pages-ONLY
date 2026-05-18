@@ -145,7 +145,7 @@ export default function Contractors() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-8 bg-gradient-to-br from-zinc-900 to-zinc-500 bg-clip-text text-transparent leading-[1.1]">
-              We Get Contractors More Jobs Using AI, Smart Websites, and 5-Star Review Systems — Just $269/mo
+              We Get Contractors More Jobs Using AI, Smart Websites, and 5-Star Review Systems — Just <span className="italic">$269/mo</span>
             </h1>
             <h2 className="text-base md:text-xl font-normal text-zinc-600 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
               Missed a call on the job? Our system texts them back in 60 seconds so you book it before they call your competitor.
