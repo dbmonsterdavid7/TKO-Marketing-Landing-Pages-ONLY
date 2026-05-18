@@ -344,7 +344,7 @@ export default function Wellness() {
                 </button>
                 <div className="flex items-center gap-2">
                   <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isAnnual ? "text-[#a60724]" : "text-zinc-500"}`}>Annual</span>
-                  <span className="bg-[#a60724] text-zinc-900 text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_15px_rgba(166,7,36,0.4)] animate-pulse">SAVE 25%</span>
+                  <span className="bg-[#a60724] text-zinc-900 text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_15px_rgba(166,7,36,0.4)] animate-pulse">SAVE 33%</span>
                 </div>
               </div>
 
@@ -352,7 +352,7 @@ export default function Wellness() {
                 <div className="flex flex-col items-center md:items-start">
                   <div className="inline-flex items-baseline gap-1">
                     <span className="text-2xl font-bold text-zinc-500">$</span>
-                    <span className="text-6xl font-black text-white">{isAnnual ? "2,570" : "269"}</span>
+                    <span className="text-6xl font-black text-white">{isAnnual ? "2,700" : "269"}</span>
                   </div>
                   <p className="text-zinc-500 font-medium uppercase tracking-widest text-[10px] mt-1">
                     {isAnnual ? "per year — billed annually" : "per month — cancel anytime"}
