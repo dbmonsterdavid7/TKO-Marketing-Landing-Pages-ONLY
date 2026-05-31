@@ -68,12 +68,32 @@ export default function Contractors() {
   const bookingRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Form embed script
     const script = document.createElement("script");
     script.src = "https://link.msgsndr.com/js/form_embed.js";
     script.async = true;
     document.body.appendChild(script);
+
+    // Wistia scripts
+    const wistiaPlayerScript = document.createElement("script");
+    wistiaPlayerScript.src = "https://fast.wistia.com/player.js";
+    wistiaPlayerScript.async = true;
+    document.body.appendChild(wistiaPlayerScript);
+
+    const wistiaEmbedScript = document.createElement("script");
+    wistiaEmbedScript.src = "https://fast.wistia.com/embed/cwj1df20sv.js";
+    wistiaEmbedScript.async = true;
+    wistiaEmbedScript.type = "module";
+    document.body.appendChild(wistiaEmbedScript);
+
     return () => {
       document.body.removeChild(script);
+      try {
+        document.body.removeChild(wistiaPlayerScript);
+      } catch (e) {}
+      try {
+        document.body.removeChild(wistiaEmbedScript);
+      } catch (e) {}
     };
   }, []);
 
@@ -158,15 +178,23 @@ export default function Contractors() {
             transition={{ duration: 1, delay: 0.4 }}
             className="relative max-w-2xl mx-auto py-4 md:py-6"
           >
-            <div className="aspect-video w-full rounded-2xl shadow-2xl overflow-hidden border border-zinc-100/10">
-              <iframe
-                src="https://player.vimeo.com/video/1193100427?autoplay=1&loop=1&muted=1"
+            <div className="aspect-video w-full rounded-2xl shadow-2xl overflow-hidden border border-zinc-100/10 bg-zinc-950">
+              <div 
                 className="w-full h-full"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title="Takeover Marketing Video"
-              ></iframe>
+                dangerouslySetInnerHTML={{ 
+                  __html: `
+                    <style>
+                      wistia-player[media-id='cwj1df20sv']:not(:defined) { 
+                        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/cwj1df20sv/swatch'); 
+                        display: block; 
+                        filter: blur(5px); 
+                        padding-top:56.25%; 
+                      }
+                    </style>
+                    <wistia-player media-id="cwj1df20sv" aspect="1.7777777777777777" style="display:block; width:100%; height:100%;"></wistia-player>
+                  ` 
+                }} 
+              />
             </div>
           </motion.div>
         </div>
