@@ -42,6 +42,15 @@
     /></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+    window.addEventListener('message', function(e) {
+      if (Array.isArray(e.data) && e.data[0] === 'msgsndr-booking-complete') {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Schedule');
+        }
+      }
+    }, false);
+    </script>
   </body>
 </html>
 
