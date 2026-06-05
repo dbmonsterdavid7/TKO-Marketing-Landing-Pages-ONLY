@@ -31,6 +31,13 @@ function AppContent() {
   const { pathname } = useLocation();
   const hostname = window.location.hostname;
   
+  // Track Meta Pixel page views on all routes on navigation
+  useEffect(() => {
+    if (typeof (window as any).fbq === "function") {
+      (window as any).fbq("track", "PageView");
+    }
+  }, [pathname]);
+  
   // Detect if we are on the wellness subdomain (e.g., wellness.tkovermarketing.com)
   const isWellnessSubdomain = hostname.startsWith('wellness.');
   const isWellness = pathname === '/wellness' || isWellnessSubdomain;
