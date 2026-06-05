@@ -1,15 +1,25 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import Wellness from "./pages/Wellness";
-import Contractors from "./pages/Contractors";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfUse from "./pages/TermsOfUse";
-import Grow from "./pages/Grow";
-import GrowThankYou from "./pages/GrowThankYou";
-import GrowCalendar from "./pages/GrowCalendar";
+import { useEffect, lazy, Suspense } from "react";
 import { ParticleBackground } from "./components/ParticleBackground";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
+
+// Lazy load pages for premium speed optimization and code splitting
+const Wellness = lazy(() => import("./pages/Wellness"));
+const Contractors = lazy(() => import("./pages/Contractors"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
+const Grow = lazy(() => import("./pages/Grow"));
+const GrowThankYou = lazy(() => import("./pages/GrowThankYou"));
+const GrowCalendar = lazy(() => import("./pages/GrowCalendar"));
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full border-2 border-t-[#a60724] border-zinc-800 animate-spin" />
+    </div>
+  );
+}
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -49,11 +59,13 @@ function AppContent() {
     return (
       <>
         <ScrollToTop />
-        <Routes>
-          <Route path="/grow" element={<Grow />} />
-          <Route path="/grow-thank-you" element={<GrowThankYou />} />
-          <Route path="/grow-calendar" element={<GrowCalendar />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/grow" element={<Grow />} />
+            <Route path="/grow-thank-you" element={<GrowThankYou />} />
+            <Route path="/grow-calendar" element={<GrowCalendar />} />
+          </Routes>
+        </Suspense>
       </>
     );
   }
@@ -96,15 +108,17 @@ function AppContent() {
       </div>
 
       <main>
-        <Routes>
-          <Route path="/" element={isWellnessSubdomain ? <Wellness /> : <Contractors />} />
-          <Route path="/wellness" element={<Wellness />} />
-          <Route path="/contractors" element={<Contractors />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfUse />} />
-          <Route path="/terms-of-use" element={<TermsOfUse />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={isWellnessSubdomain ? <Wellness /> : <Contractors />} />
+            <Route path="/wellness" element={<Wellness />} />
+            <Route path="/contractors" element={<Contractors />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfUse />} />
+            <Route path="/terms-of-use" element={<TermsOfUse />} />
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />

@@ -20,7 +20,9 @@ export const ParticleBackground: React.FC = () => {
   const particleBg = (isWellness || isContractors) ? '#a60724' : 'white';
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 50 }).map((_, i) => ({
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const count = isMobile ? 12 : 50;
+    const newParticles = Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100 + 100,
