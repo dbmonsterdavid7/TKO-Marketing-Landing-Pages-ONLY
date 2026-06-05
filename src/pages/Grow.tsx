@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
 export default function Grow() {
   useEffect(() => {
@@ -144,6 +145,47 @@ export default function Grow() {
         @keyframes grow-pulse {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .grow-page-root .urgency-separator {
+          margin: 0 10px;
+          opacity: 0.3;
+          font-weight: normal;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .grow-page-root .urgency-rating {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          vertical-align: middle;
+        }
+        .grow-page-root .rating-label {
+          color: #a60724;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+        .grow-page-root .rating-stars {
+          display: inline-flex;
+          align-items: center;
+          gap: 2px;
+        }
+        .grow-page-root .rating-stars .star-icon {
+          width: 14px;
+          height: 14px;
+          color: #a60724;
+          fill: #a60724;
+          display: inline-block;
+          vertical-align: middle;
+          animation: grow-star-pulse 2s infinite ease-in-out;
+        }
+        .grow-page-root .rating-count {
+          color: #a60724;
+          font-weight: 700;
+        }
+        @keyframes grow-star-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.7; transform: scale(1.15); }
         }
 
         @media (max-width: 1024px) {
@@ -574,6 +616,20 @@ export default function Grow() {
         <div className="urgency-content">
           <span className="urgency-dot"></span>
           <strong>LIMITED SPOTS:</strong> We only take on 5 new contractors per month to ensure quality. <a href="#booking">Check availability →</a>
+          <span className="urgency-separator">|</span>
+          <span className="urgency-rating">
+            <span className="rating-label">RATED 4.9</span>
+            <span className="rating-stars">
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className="star-icon" 
+                  style={{ animationDelay: `${i * 150}ms` }} 
+                />
+              ))}
+            </span>
+            <span className="rating-count">(126)</span>
+          </span>
         </div>
       </div>
 
