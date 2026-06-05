@@ -25,13 +25,30 @@ export default function Grow() {
     // Scroll to section smoothly if a hash link is clicked
     const handleHashClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const href = target.getAttribute("href");
+      const anchor = target.closest("a");
+      const href = anchor ? anchor.getAttribute("href") : null;
       if (href && href.startsWith("#")) {
         e.preventDefault();
-        const id = href.slice(1);
+        let id = href.slice(1);
+        
+        // On mobile, if targeting the booking section, scroll directly to the calendar embed
+        if (id === "booking" && window.innerWidth <= 768) {
+          id = "booking-calendar";
+        }
+
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const targetTop = rect.top + scrollTop;
+          
+          // Deduct sticky bar height on mobile if targeting the calendar
+          const offset = id === "booking-calendar" ? 50 : 0;
+          
+          window.scrollTo({
+            top: targetTop - offset,
+            behavior: "smooth"
+          });
         }
       }
     };
@@ -797,7 +814,7 @@ export default function Grow() {
             </div>
           </div>
 
-          <div className="calendar-embed">
+          <div className="calendar-embed" id="booking-calendar">
             <div className="calendar-label">
               <div className="calendar-label-title">Free Contractor Growth Call — 15 Minutes</div>
               <div className="calendar-label-sub">Takeover Marketing · Select a date and time below</div>
