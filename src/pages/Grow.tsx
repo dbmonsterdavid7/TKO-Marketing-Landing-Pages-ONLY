@@ -3,6 +3,25 @@ import { Link } from "react-router-dom";
 
 export default function Grow() {
   useEffect(() => {
+    // Load Wistia scripts
+    const script1 = document.createElement("script");
+    script1.src = "https://fast.wistia.com/player.js";
+    script1.async = true;
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement("script");
+    script2.src = "https://fast.wistia.com/embed/mmo9tw3cxk.js";
+    script2.async = true;
+    script2.type = "module";
+    document.head.appendChild(script2);
+
+    // Load LeadConnector form embed script
+    const script3 = document.createElement("script");
+    script3.src = "https://link.msgsndr.com/js/form_embed.js";
+    script3.async = true;
+    script3.type = "text/javascript";
+    document.head.appendChild(script3);
+
     // Scroll to section smoothly if a hash link is clicked
     const handleHashClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -20,6 +39,15 @@ export default function Grow() {
     document.addEventListener("click", handleHashClick);
     return () => {
       document.removeEventListener("click", handleHashClick);
+      if (document.head.contains(script1)) {
+        document.head.removeChild(script1);
+      }
+      if (document.head.contains(script2)) {
+        document.head.removeChild(script2);
+      }
+      if (document.head.contains(script3)) {
+        document.head.removeChild(script3);
+      }
     };
   }, []);
 
@@ -50,7 +78,7 @@ export default function Grow() {
           width: 100%;
           margin: 0;
           padding: 0;
-          overflow-x: hidden;
+          overflow-x: clip;
         }
 
         .grow-page-root * { 
@@ -74,7 +102,7 @@ export default function Grow() {
           letter-spacing: 0.02em;
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 9999;
           overflow: hidden;
         }
         .grow-page-root .urgency-content {
@@ -102,6 +130,9 @@ export default function Grow() {
 
         @media (max-width: 1024px) {
           .grow-page-root .urgency-bar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 9999 !important;
             padding: 10px 0;
             display: flex;
             align-items: center;
@@ -178,6 +209,17 @@ export default function Grow() {
           background: #111;
           aspect-ratio: 16/9;
           cursor: pointer;
+        }
+        .grow-page-root wistia-player[media-id='mmo9tw3cxk']:not(:defined) {
+          background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/mmo9tw3cxk/swatch');
+          display: block;
+          filter: blur(5px);
+          padding-top: 56.25%;
+        }
+        .grow-page-root wistia-player {
+          display: block;
+          width: 100% !important;
+          height: 100% !important;
         }
         .grow-page-root .video-placeholder {
           width: 100%;
@@ -534,13 +576,12 @@ export default function Grow() {
             <span>↓ Step 1:</span> Watch This 3-Minute Video First ↓
           </p>
           <div className="video-wrapper" id="main-video">
-            {/* REPLACE THIS WITH YOUR ACTUAL VIDEO EMBED (GHL, Vimeo, Wistia, etc.) */}
-            <div className="video-placeholder">
-              <div className="play-btn">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              </div>
-              <p>Your VSL Video Here</p>
-            </div>
+            <div 
+              style={{ width: '100%', height: '100%' }}
+              dangerouslySetInnerHTML={{ 
+                __html: `<wistia-player media-id="mmo9tw3cxk" aspect="1.7777777777777777"></wistia-player>` 
+              }} 
+            />
           </div>
           <p className="sound-note">🔊 <span>Turn your sound on</span> — this video has audio</p>
         </div>
@@ -692,7 +733,7 @@ export default function Grow() {
       <section className="second-cta">
         <div className="container-narrow" style={{ textAlign: "center" }}>
           <a href="#booking" className="btn-primary">Get My Free Website + System Now</a>
-          <p className="btn-subtext">Takes 15 minutes to set up your call. We'll show you a live demo.</p>
+          <p className="btn-subtext">We'll answer all of your questions on this quick call.</p>
         </div>
       </section>
 
@@ -726,25 +767,12 @@ export default function Grow() {
         </div>
       </section>
 
-      {/* RISK REVERSAL */}
-      <section style={{ background: "var(--black)", padding: "48px 20px" }}>
-        <div className="risk-reversal">
-          <div className="risk-icon">🛡️</div>
-          <h3>Zero Risk Guarantee</h3>
-          <p>
-            Try the entire system for <strong>30 days.</strong> If you don't think it's worth every penny — for any reason — just let us know and we'll cancel with no questions asked.
-            <br /><br />
-            No long-term contracts. No setup fees. <strong>You're never locked in.</strong>
-          </p>
-        </div>
-      </section>
-
       {/* BOOKING SECTION */}
       <section className="booking-section" id="booking">
         <div className="container">
           <div className="booking-header">
             <h2>Book Your Free Strategy Call</h2>
-            <p>On this 15-minute call we'll show you a live demo, answer every question, and tell you exactly how we'll build your free website.</p>
+            <p>On this 15-minute call we'll answer every question, show you a live demo, and tell you exactly how we'll build your free website.</p>
           </div>
 
           <div className="call-promises">
@@ -760,8 +788,8 @@ export default function Grow() {
             </div>
             <div className="call-promise">
               <div className="call-promise-icon">📅</div>
-              <h4>Ready in 7 Days</h4>
-              <p>If we move forward, your website and system are live within a week</p>
+              <h4>Ready in 10 Days</h4>
+              <p>If we move forward, your website and system are live within 10 days</p>
             </div>
           </div>
 
@@ -770,12 +798,13 @@ export default function Grow() {
               <div className="calendar-label-title">Free Contractor Growth Call — 15 Minutes</div>
               <div className="calendar-label-sub">Takeover Marketing · Select a date and time below</div>
             </div>
-            {/* REPLACE THE IFRAME BELOW WITH YOUR ACTUAL GHL CALENDAR EMBED URL */}
-            <div style={{ minHeight: "420px", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "10px", color: "#555", fontSize: "14px", padding: "40px" }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-              <p>Replace this block with your GHL calendar iframe embed</p>
-              <p style={{ fontSize: "12px", color: "#444" }}>Paste your calendar embed URL into the iframe src above</p>
-            </div>
+            <iframe 
+              src="https://api.leadconnectorhq.com/widget/booking/sSJG2lLmJamOBUgLWT3w" 
+              style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "620px" }} 
+              scrolling="no" 
+              id="sSJG2lLmJamOBUgLWT3w_1780626968943"
+              title="Booking Calendar"
+            />
           </div>
         </div>
       </section>
