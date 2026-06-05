@@ -4,6 +4,7 @@ import Wellness from "./pages/Wellness";
 import Contractors from "./pages/Contractors";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
+import Grow from "./pages/Grow";
 import { ParticleBackground } from "./components/ParticleBackground";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
@@ -33,6 +34,18 @@ function AppContent() {
   const isWellnessSubdomain = hostname.startsWith('wellness.');
   const isWellness = pathname === '/wellness' || isWellnessSubdomain;
   const isContractors = pathname === '/contractors' || pathname === '/';
+  const isGrowPage = pathname === '/grow';
+  
+  if (isGrowPage) {
+    return (
+      <>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/grow" element={<Grow />} />
+        </Routes>
+      </>
+    );
+  }
   
   const isLightPage = isWellness || isContractors;
   

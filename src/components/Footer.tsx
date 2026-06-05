@@ -45,6 +45,7 @@ export function Footer() {
             <Link to="/terms-of-use" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Terms of Use</Link>
             <Link to="/wellness" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Wellness</Link>
             <Link to="/contractors" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Contractors</Link>
+            <Link to="/grow" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Grow</Link>
           </div>
         </div>
         <div className={`text-[10px] leading-relaxed ${textMuted} max-w-4xl`}>
