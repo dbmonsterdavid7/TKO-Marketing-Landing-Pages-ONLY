@@ -78,7 +78,7 @@ export default function Grow() {
           width: 100%;
           margin: 0;
           padding: 0;
-          overflow-x: clip;
+          overflow: visible;
         }
 
         .grow-page-root * { 
@@ -100,6 +100,7 @@ export default function Grow() {
           font-size: 14px;
           font-weight: 600;
           letter-spacing: 0.02em;
+          position: -webkit-sticky;
           position: sticky;
           top: 0;
           z-index: 9999;
@@ -130,6 +131,7 @@ export default function Grow() {
 
         @media (max-width: 1024px) {
           .grow-page-root .urgency-bar {
+            position: -webkit-sticky !important;
             position: sticky !important;
             top: 0 !important;
             z-index: 9999 !important;
