@@ -817,14 +817,24 @@ export default function Grow() {
           <div className="calendar-embed" id="booking-calendar">
             <div className="calendar-label">
               <div className="calendar-label-title">Free Contractor Growth Call — 15 Minutes</div>
-              <div className="calendar-label-sub">Takeover Marketing · Select a date and time below</div>
+              <div className="calendar-label-sub">Takeover Marketing · Fill out the form details below</div>
             </div>
-            <iframe 
-              src="https://api.leadconnectorhq.com/widget/booking/sSJG2lLmJamOBUgLWT3w" 
-              style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "620px" }} 
-              scrolling="no" 
-              id="sSJG2lLmJamOBUgLWT3w_1780626968943"
-              title="Booking Calendar"
+            <iframe
+              src="https://api.leadconnectorhq.com/widget/form/IqILvNxBfXxI0NVdJu5q"
+              style={{ width: "100%", height: "100%", border: "none", borderRadius: "3px", minHeight: "570px" }}
+              id="inline-IqILvNxBfXxI0NVdJu5q" 
+              data-layout="{'id':'INLINE'}"
+              data-trigger-type="alwaysShow"
+              data-trigger-value=""
+              data-activation-type="alwaysActivated"
+              data-activation-value=""
+              data-deactivation-type="neverDeactivate"
+              data-deactivation-value=""
+              data-form-name="Wellness Landing Page"
+              data-height="570"
+              data-layout-iframe-id="inline-IqILvNxBfXxI0NVdJu5q"
+              data-form-id="IqILvNxBfXxI0NVdJu5q"
+              title="Wellness Landing Page"
             />
           </div>
         </div>

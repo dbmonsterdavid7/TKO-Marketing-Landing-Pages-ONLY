@@ -234,7 +234,7 @@ export default function GrowThankYou() {
           padding: 14px 36px;
           border-radius: 3px;
           text-decoration: none;
-          transition: transform 0.2s ease, background-color 0.2s ease;
+          transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
           border: none;
           cursor: pointer;
           margin-top: 20px;
@@ -243,6 +243,29 @@ export default function GrowThankYou() {
         .grow-page-root .btn-accent:hover {
           background: var(--yellow-dark);
           transform: translateY(-2px);
+        }
+
+        .grow-page-root .btn-pulse {
+          background: var(--green) !important;
+          color: var(--black) !important;
+          animation: pulse-green 2s infinite;
+        }
+
+        .grow-page-root .btn-pulse:hover {
+          background: #16a34a !important;
+          transform: translateY(-2px);
+        }
+
+        @keyframes pulse-green {
+          0% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 16px rgba(34, 197, 94, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+          }
         }
 
         @media (max-width: 600px) {
@@ -257,7 +280,7 @@ export default function GrowThankYou() {
 
       {/* Minimal Header */}
       <header className="header-minimal">
-        <Link to="/" className="logo">
+        <Link to="/grow" className="logo">
           Takeover <span>Marketing</span>
         </Link>
         <Link to="/grow" className="back-home-link">
@@ -273,9 +296,9 @@ export default function GrowThankYou() {
             <div className="success-icon">✓</div>
           </div>
 
-          <h1>Call Is <span>Confirmed!</span></h1>
+          <h1>Form <span>Received!</span></h1>
           <p className="sub-heading">
-            Thank you for booking your free 15-minute Contractor Growth call. We're excited to show you exactly how we can set up your free website and automated system.
+            Thank you for submitting your details. We have successfully received your form, and we're ready to help you set up your free website and automated systems.
           </p>
 
           <div className="steps-container">
@@ -284,9 +307,9 @@ export default function GrowThankYou() {
             <div className="step-item">
               <div className="step-num">1</div>
               <div className="step-content">
-                <h3>Check Your Inbox & SMS</h3>
+                <h3>Schedule Your Growth Call</h3>
                 <p>
-                  You will receive an automatic confirmation email and text message with the booking details and the direct **Zoom** video calendar link.
+                  You will receive an automatic text message and email with a direct booking link to schedule a 15-minute Contractor Growth call time that works best for you.
                 </p>
               </div>
             </div>
@@ -296,7 +319,7 @@ export default function GrowThankYou() {
               <div className="step-content">
                 <h3>We Go to Work (Before the Call)</h3>
                 <p>
-                  Before our call, our team looks up your business name and reviews your current online presence. **We mock up a custom website structure** with your branding completely free so we can show you exactly what we'll build for you on our screen.
+                  Once you book your call, our team looks up your business name and reviews your current online presence. **We mock up a custom website structure** with your branding completely free so we can show you exactly what we'll build for you on our screen during our call.
                 </p>
               </div>
             </div>
@@ -306,7 +329,7 @@ export default function GrowThankYou() {
               <div className="step-content">
                 <h3>Be Live and Ready on Time</h3>
                 <p>
-                  Because our slots are open to only **5 new contractors each month** to maintain quality, please respect this time slot. Have a computer or mobile phone ready so you can view our call clearly.
+                  Because our slots are open to only **5 new contractors each month** to maintain quality, please respect your booked time slot. Have a computer or mobile phone ready so you can view our call clearly.
                 </p>
               </div>
             </div>
@@ -318,8 +341,8 @@ export default function GrowThankYou() {
             </div>
           </div>
 
-          <Link to="/grow" className="btn-accent">
-            Return to Grow Page
+          <Link to="/grow-calendar" className="btn-accent btn-pulse">
+            Book Your Call Now
           </Link>
         </div>
       </section>

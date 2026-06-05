@@ -6,6 +6,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import Grow from "./pages/Grow";
 import GrowThankYou from "./pages/GrowThankYou";
+import GrowCalendar from "./pages/GrowCalendar";
 import { ParticleBackground } from "./components/ParticleBackground";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
@@ -42,7 +43,7 @@ function AppContent() {
   const isWellnessSubdomain = hostname.startsWith('wellness.');
   const isWellness = pathname === '/wellness' || isWellnessSubdomain;
   const isContractors = pathname === '/contractors' || pathname === '/';
-  const isGrowFlow = pathname === '/grow' || pathname === '/grow-thank-you';
+  const isGrowFlow = pathname === '/grow' || pathname === '/grow-thank-you' || pathname === '/grow-calendar';
   
   if (isGrowFlow) {
     return (
@@ -51,6 +52,7 @@ function AppContent() {
         <Routes>
           <Route path="/grow" element={<Grow />} />
           <Route path="/grow-thank-you" element={<GrowThankYou />} />
+          <Route path="/grow-calendar" element={<GrowCalendar />} />
         </Routes>
       </>
     );
