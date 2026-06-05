@@ -554,7 +554,7 @@ export default function Grow() {
       <div className="urgency-bar">
         <div className="urgency-content">
           <span className="urgency-dot"></span>
-          <strong>LIMITED SPOTS:</strong> We only take on 3 new contractors per month to ensure quality. <a href="#booking">Check availability →</a>
+          <strong>LIMITED SPOTS:</strong> We only take on 5 new contractors per month to ensure quality. <a href="#booking">Check availability →</a>
         </div>
       </div>
 
@@ -591,7 +591,7 @@ export default function Grow() {
       <section className="first-cta">
         <div className="container-narrow">
           <p className="cta-desc">
-            We build your free website, set up automated follow-up, and have your system running in <strong>under 7 days</strong>. All for $269/month.
+            We build your free website, set up automated follow-up, and have your system running in <strong>under 10 days</strong>. All for $269/month.
           </p>
           <a href="#booking" className="btn-primary">Yes — Build My Free Website Now</a>
           <p className="btn-subtext">No contracts. Cancel anytime. Setup included.</p>
@@ -603,7 +603,8 @@ export default function Grow() {
         <div className="container">
           <p className="section-label">What contractors are saying</p>
 
-          {/* Video Testimonial placeholder */}
+          {/* Video Testimonial placeholder - Hidden for now */}
+          {/*
           <div className="video-testimonial-wrap">
             <div className="video-testimonial">
               <div className="play-btn" style={{ width: "56px", height: "56px" }}>
@@ -612,6 +613,7 @@ export default function Grow() {
               <p>Video testimonial</p>
             </div>
           </div>
+          */}
 
           {/* Google Review Cards */}
           <div className="reviews-grid">
@@ -653,7 +655,7 @@ export default function Grow() {
               </div>
               <div className="stars">★★★★★</div>
               <p className="review-text">
-                <span className="review-highlight">I found Takeover Marketing by chance and I'm very glad I did.</span> Barry got right to work and I had a great website and auto set-up quickly. These guys don't fool around — highly recommend.
+                <span className="review-highlight">I found Takeover Marketing by chance and I'm very glad I did.</span> David got right to work and I had a great website and auto set-up quickly. These guys don't fool around — highly recommend.
               </p>
             </div>
           </div>
