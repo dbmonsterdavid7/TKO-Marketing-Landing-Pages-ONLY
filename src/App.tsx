@@ -13,6 +13,8 @@ const Grow = lazy(() => import("./pages/Grow"));
 const Website = lazy(() => import("./pages/Website"));
 const GrowThankYou = lazy(() => import("./pages/GrowThankYou"));
 const GrowCalendar = lazy(() => import("./pages/GrowCalendar"));
+const WebsiteThankYou = lazy(() => import("./pages/WebsiteThankYou"));
+const WebsiteCalendar = lazy(() => import("./pages/WebsiteCalendar"));
 
 function PageLoader() {
   return (
@@ -54,7 +56,7 @@ function AppContent() {
   const isWellnessSubdomain = hostname.startsWith('wellness.');
   const isWellness = pathname === '/wellness' || isWellnessSubdomain;
   const isContractors = pathname === '/contractors' || pathname === '/';
-  const isGrowFlow = pathname === '/grow' || pathname === '/website' || pathname === '/grow-thank-you' || pathname === '/grow-calendar';
+  const isGrowFlow = pathname === '/grow' || pathname === '/website' || pathname === '/grow-thank-you' || pathname === '/grow-calendar' || pathname === '/website-thank-you' || pathname === '/website-calendar';
   
   if (isGrowFlow) {
     return (
@@ -66,6 +68,8 @@ function AppContent() {
             <Route path="/website" element={<Website />} />
             <Route path="/grow-thank-you" element={<GrowThankYou />} />
             <Route path="/grow-calendar" element={<GrowCalendar />} />
+            <Route path="/website-thank-you" element={<WebsiteThankYou />} />
+            <Route path="/website-calendar" element={<WebsiteCalendar />} />
           </Routes>
         </Suspense>
       </>
