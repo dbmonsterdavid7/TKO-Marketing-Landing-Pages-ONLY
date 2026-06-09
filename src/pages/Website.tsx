@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Star, ArrowLeft, ArrowRight, X, ExternalLink, Globe } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight, X, ExternalLink } from "lucide-react";
 
 interface DesignItem {
   id: number;
   title: string;
   niche: string;
   image: string;
+  images?: string[];
   mockupColor: string;
   features: string[];
   tagline: string;
@@ -15,36 +16,55 @@ interface DesignItem {
 const PAST_DESIGNS: DesignItem[] = [
   {
     id: 1,
-    title: "Apex Roofing & Siding",
+    title: "Steer Concepts",
     niche: "Roofing & Siding",
-    image: "https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&w=800&q=80",
+    image: "https://lh3.googleusercontent.com/d/1JG5F8EfrV5DevfQBWt5yKawfKoB9Ib07",
+    images: [
+      "https://lh3.googleusercontent.com/d/1JG5F8EfrV5DevfQBWt5yKawfKoB9Ib07",
+      "https://lh3.googleusercontent.com/d/1_SljuBlAlnzqAgGP-X6VP7z51boRXfYm",
+      "https://lh3.googleusercontent.com/d/1vLORRb6g-B5pKChuhhn23vgFYW-c8KAA"
+    ],
     mockupColor: "#f5c518",
     features: ["Shingle Style Chooser", "Instant Estimate Tool", "Customer Job Map"],
     tagline: "Bold contrast, prominent trust indicators, and high-visibility phone buttons."
   },
   {
     id: 2,
-    title: "Precision HVAC Specialists",
+    title: "Jade Air HVAC",
     niche: "Heating & Cooling",
-    image: "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80",
+    image: "https://lh3.googleusercontent.com/d/19s2qDC2XZGac4T_ClyN_bmGksdz-C1mo",
+    images: [
+      "https://lh3.googleusercontent.com/d/19s2qDC2XZGac4T_ClyN_bmGksdz-C1mo",
+      "https://lh3.googleusercontent.com/d/1hQX43_lxIqnnrya05qWKQkuKCy5xl-rc",
+      "https://lh3.googleusercontent.com/d/1Dc5H6ssmg0qppVqRdfflzH20M6n0UNxb"
+    ],
     mockupColor: "#3b82f6",
     features: ["Emergency Dispatch Banner", "Maintenance Club Form", "Dynamic Filter Wizard"],
     tagline: "Conversion-optimized layouts built specifically to capture emergency service calls."
   },
   {
     id: 3,
-    title: "Vanguard Landscaping",
+    title: "Keegan Bros. Landscaping",
     niche: "Landscaping & Lawn Care",
-    image: "https://images.unsplash.com/photo-1558905611-140fa91bf357?auto=format&fit=crop&w=800&q=80",
+    image: "https://lh3.googleusercontent.com/d/1BnbygaA4GB8qn7_0Uv3eVDrx1UNp7ZvD",
+    images: [
+      "https://lh3.googleusercontent.com/d/1BnbygaA4GB8qn7_0Uv3eVDrx1UNp7ZvD",
+      "https://lh3.googleusercontent.com/d/16qN93a1lO-59yAZNjX-SVso050_l0eW3"
+    ],
     mockupColor: "#22c55e",
     features: ["Interactive Project Gallery", "Seasonal Care Guide", "Design Estimator"],
     tagline: "Clean, media-focused styles centering stunning physical workspace results."
   },
   {
     id: 4,
-    title: "Ironclad Plumbing & Drain",
+    title: "Cap's Drain Cleaning & Plumbing",
     niche: "Plumbing Services",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80",
+    image: "https://lh3.googleusercontent.com/d/1HeU-Ieh-QCMJ1-u5Ho-DfvuTpVAuMhve",
+    images: [
+      "https://lh3.googleusercontent.com/d/1HeU-Ieh-QCMJ1-u5Ho-DfvuTpVAuMhve",
+      "https://lh3.googleusercontent.com/d/1m2uiQuZN7QCx4Yp5uGLCn9-rclabahLM",
+      "https://lh3.googleusercontent.com/d/1QpDbia6qYFHrQf0wjdT4CA01kaTn3qU-"
+    ],
     mockupColor: "#0ea5e9",
     features: ["Drain Clearing Special Badge", "Direct Schedule Integration", "Verified Live Reviews"],
     tagline: "Ultra-clean designs highlighting Google star ratings and prompt dispatch availability."
@@ -63,6 +83,8 @@ const PAST_DESIGNS: DesignItem[] = [
 export default function Website() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [selectedDesign, setSelectedDesign] = useState<DesignItem | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [activeImageIdx, setActiveImageIdx] = useState(0);
 
   useEffect(() => {
     // Load Wistia scripts
@@ -1123,6 +1145,8 @@ export default function Website() {
                     onClick={() => {
                       if (i === activeIdx) {
                         setSelectedDesign(design);
+                        setActiveImageIdx(0);
+                        setIsZoomed(false);
                       } else {
                         setActiveIdx(i);
                       }
@@ -1153,7 +1177,11 @@ export default function Website() {
             
             <button 
               className="wheel-arrow wheel-arrow-right" 
-              onClick={() => setActiveIdx((prev) => (prev + 1) % 5)}
+              onClick={() => {
+                setActiveIdx((prev) => (prev + 1) % 5);
+                setActiveImageIdx(0);
+                setIsZoomed(false);
+              }}
               aria-label="Next Design"
             >
               <ArrowRight size={20} />
@@ -1165,100 +1193,241 @@ export default function Website() {
               <span 
                 key={i} 
                 className={`wheel-dot ${i === activeIdx ? "active" : ""}`}
-                onClick={() => setActiveIdx(i)}
+                onClick={() => {
+                  setActiveIdx(i);
+                  setActiveImageIdx(0);
+                  setIsZoomed(false);
+                }}
               />
             ))}
           </div>
         </div>
       </section>
-
+ 
       {/* FULL SCREEN INTERACTIVE SIMULATOR LIGHTBOX */}
       {selectedDesign && (
-        <div className="lightbox-overlay" onClick={() => setSelectedDesign(null)}>
+        <div className="lightbox-overlay" onClick={() => { setSelectedDesign(null); setIsZoomed(false); setActiveImageIdx(0); }}>
           <div className="lightbox-window" onClick={(e) => e.stopPropagation()}>
             <div className="lightbox-header">
               <div className="lightbox-title-group">
                 <h3>{selectedDesign.title}</h3>
                 <p>{selectedDesign.niche} Conversion Mockup Template</p>
               </div>
-              <button className="lightbox-close" onClick={() => setSelectedDesign(null)}>
+              <button className="lightbox-close" onClick={() => { setSelectedDesign(null); setIsZoomed(false); setActiveImageIdx(0); }}>
                 <X size={20} />
               </button>
             </div>
             
-            <div className="lightbox-browser-sim">
-              <div className="browser-topbar">
-                <div className="browser-dots">
-                  <span className="browser-dot red"></span>
-                  <span className="browser-dot yellow"></span>
-                  <span className="browser-dot green"></span>
-                </div>
-                <div className="browser-address">
-                  www.{selectedDesign.title.toLowerCase().replace(/[^a-z]/g, '')}.com
-                </div>
-              </div>
-              <div className="browser-content" style={{ borderTop: `3px solid ${selectedDesign.mockupColor}` }}>
-                <div className="sim-website-demo">
-                  <div className="sim-nav">
-                    <div className="sim-logo" style={{ color: selectedDesign.mockupColor }}>
-                      <Globe size={15} />
-                      <span>{selectedDesign.title}</span>
-                    </div>
-                    <div className="sim-links">
-                      <span>Services</span>
-                      <span>Showcase</span>
-                      <span style={{ color: selectedDesign.mockupColor, fontWeight: 'bold' }}>Quote Request</span>
-                    </div>
-                  </div>
-                  
-                  <div className="sim-hero">
-                    <h4>The #1 Local Experts In {selectedDesign.niche} Solutions</h4>
-                    <p>
-                      Premium materials. Veteran-owned and operated craftsmanship. All backed by our 100% Satisfaction Guarantee.
-                    </p>
-                    <div style={{ marginTop: '16px' }}>
-                      <span 
-                        style={{ 
-                          background: selectedDesign.mockupColor, 
-                          color: '#0a0a0a', 
-                          fontWeight: '800', 
-                          fontSize: '11px', 
-                          padding: '8px 16px', 
-                          borderRadius: '4px',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em'
+            <div style={{ padding: "20px", overflow: "auto", maxHeight: "550px", textAlign: "center" }}>
+              <div 
+                style={{ 
+                  marginBottom: "12px", 
+                  display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "12px"
+                }}
+              >
+                {selectedDesign.images && selectedDesign.images.length > 1 ? (
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    {selectedDesign.images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => { setActiveImageIdx(idx); setIsZoomed(false); }}
+                        style={{
+                          background: activeImageIdx === idx ? "var(--yellow)" : "rgba(255,255,255,0.05)",
+                          color: activeImageIdx === idx ? "var(--black)" : "var(--white)",
+                          border: activeImageIdx === idx ? "1px solid var(--yellow)" : "1px solid rgba(255,255,255,0.15)",
+                          padding: "4px 10px",
+                          borderRadius: "4px",
+                          fontSize: "11px",
+                          fontWeight: "bold",
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                          transition: "all 0.2s ease"
                         }}
                       >
-                        Claim Free Quote & Inspection
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="sim-features">
-                    {selectedDesign.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="sim-feature">
-                        <div className="sim-feature-title">✓ {feat}</div>
-                        <div className="sim-feature-desc">Engineered to convert dynamic visitor traffic.</div>
-                      </div>
+                        Option {idx + 1}
+                      </button>
                     ))}
                   </div>
+                ) : <div style={{ flexGrow: 1 }}></div>}
+
+                <div 
+                  style={{ 
+                    fontSize: "12px", 
+                    color: "var(--yellow)", 
+                    cursor: "pointer", 
+                    display: "inline-flex", 
+                    alignItems: "center", 
+                    gap: "6px", 
+                    textTransform: "uppercase", 
+                    letterSpacing: "0.05em"
+                  }} 
+                  onClick={() => setIsZoomed(!isZoomed)}
+                >
+                  <span>{isZoomed ? "🔍 Click to Zoom Out" : "🔍 Click Image to Zoom In"}</span>
                 </div>
               </div>
+
+              <div style={{ position: "relative", display: "inline-block", maxWidth: "100%" }}>
+                {selectedDesign.images && selectedDesign.images.length > 1 && !isZoomed && (
+                  <>
+                    <button
+                      onClick={() => setActiveImageIdx((prev) => (prev - 1 + selectedDesign.images!.length) % selectedDesign.images!.length)}
+                      style={{
+                        position: "absolute",
+                        left: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "rgba(10,10,10,0.75)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "var(--white)",
+                        borderRadius: "50%",
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        zIndex: 10,
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                    <button
+                      onClick={() => setActiveImageIdx((prev) => (prev + 1) % selectedDesign.images!.length)}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "rgba(10,10,10,0.75)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "var(--white)",
+                        borderRadius: "50%",
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        zIndex: 10,
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <ArrowRight size={18} />
+                    </button>
+                  </>
+                )}
+
+                <img 
+                  src={(selectedDesign.images && selectedDesign.images[activeImageIdx]) || selectedDesign.image} 
+                  alt={selectedDesign.title} 
+                  onClick={() => setIsZoomed(!isZoomed)}
+                  style={{ 
+                    width: isZoomed ? "160%" : "100%", 
+                    maxWidth: isZoomed ? "160%" : "100%",
+                    height: "auto", 
+                    objectFit: "contain", 
+                    borderRadius: "6px", 
+                    border: "1px solid #222222", 
+                    display: "inline-block",
+                    cursor: isZoomed ? "zoom-out" : "zoom-in",
+                    transition: "width 0.25s ease, max-width 0.25s ease"
+                  }} 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {selectedDesign.images && selectedDesign.images.length > 1 && (
+                <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "16px" }}>
+                  {selectedDesign.images.map((imgUrl, idx) => (
+                    <div 
+                      key={idx}
+                      onClick={() => { setActiveImageIdx(idx); setIsZoomed(false); }}
+                      style={{
+                        width: "80px",
+                        height: "50px",
+                        borderRadius: "4px",
+                        overflow: "hidden",
+                        border: activeImageIdx === idx ? "2px solid var(--yellow)" : "2px solid rgba(255, 255, 255, 0.1)",
+                        cursor: "pointer",
+                        opacity: activeImageIdx === idx ? 1 : 0.6,
+                        transition: "all 0.2s ease"
+                      }}
+                    >
+                      <img 
+                        src={imgUrl} 
+                        alt="thumbnail" 
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             
-            <div className="lightbox-details">
-              <h4>Included Live Optimization Features:</h4>
-              <div className="lightbox-bullets">
-                {selectedDesign.features.map((feature, fIdx) => (
-                  <span key={fIdx} className="lightbox-bullet">
-                    ✦ {feature}
-                  </span>
-                ))}
-                <span className="lightbox-bullet">✦ Responsive Multi-Device UI</span>
-                <span className="lightbox-bullet">✦ Lightning Fast Global Delivery</span>
-                <span className="lightbox-bullet">✦ Interactive Click-to-Call</span>
+            {selectedDesign.id === 1 && (
+              <div className="lightbox-details" style={{ display: "flex", justifyContent: "center", paddingBottom: "24px" }}>
+                <a 
+                  href="https://www.steerconcepts.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: "inline-flex", 
+                    alignItems: "center", 
+                    gap: "8px", 
+                    backgroundColor: "var(--yellow)", 
+                    color: "var(--black)", 
+                    fontWeight: "bold", 
+                    fontSize: "14px",
+                    padding: "12px 24px", 
+                    borderRadius: "6px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    transition: "all 0.2s ease",
+                    textDecoration: "none"
+                  }}
+                  className="hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <ExternalLink size={16} />
+                  View Live Website (Steer Concepts)
+                </a>
               </div>
-            </div>
+            )}
+
+            {selectedDesign.id === 3 && (
+              <div className="lightbox-details" style={{ display: "flex", justifyContent: "center", paddingBottom: "24px" }}>
+                <a 
+                  href="https://keeganbros.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: "inline-flex", 
+                    alignItems: "center", 
+                    gap: "8px", 
+                    backgroundColor: "var(--yellow)", 
+                    color: "var(--black)", 
+                    fontWeight: "bold", 
+                    fontSize: "14px",
+                    padding: "12px 24px", 
+                    borderRadius: "6px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    transition: "all 0.2s ease",
+                    textDecoration: "none"
+                  }}
+                  className="hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <ExternalLink size={16} />
+                  View Live Website (Keegan Bros. Landscaping)
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}
