@@ -71,12 +71,16 @@ const PAST_DESIGNS: DesignItem[] = [
   },
   {
     id: 5,
-    title: "Summit Design & Remodel",
-    niche: "Kitchen & Bathroom",
-    image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80",
-    mockupColor: "#a8a29e",
-    features: ["Virtual Consultation Scheduler", "Material Matrix Grid", "Interactive Case Studies"],
-    tagline: "Premium, typography-centric layouts that display high-fidelity material closeups."
+    title: "Blue Eagle Concrete",
+    niche: "Concrete Services",
+    image: "https://lh3.googleusercontent.com/d/1XWMaPFAReuU3hGQ0DlzYnG1YI2iV2-0g",
+    images: [
+      "https://lh3.googleusercontent.com/d/1XWMaPFAReuU3hGQ0DlzYnG1YI2iV2-0g",
+      "https://lh3.googleusercontent.com/d/1SJfcAFi3dsDLTH2C0U0xsCIA39JA1DzA"
+    ],
+    mockupColor: "#8e9196",
+    features: ["Instant Yardage Estimator", "Struktural Finish Gallery", "Direct Quote Booking"],
+    tagline: "Solid slate-contrast layout emphasizing structural durability and beautiful custom masonry."
   }
 ];
 
@@ -1425,6 +1429,35 @@ export default function Website() {
                 >
                   <ExternalLink size={16} />
                   View Live Website (Keegan Bros. Landscaping)
+                </a>
+              </div>
+            )}
+
+            {selectedDesign.id === 5 && (
+              <div className="lightbox-details" style={{ display: "flex", justifyContent: "center", paddingBottom: "24px" }}>
+                <a 
+                  href="https://blueeagleconcrete.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: "inline-flex", 
+                    alignItems: "center", 
+                    gap: "8px", 
+                    backgroundColor: "var(--yellow)", 
+                    color: "var(--black)", 
+                    fontWeight: "bold", 
+                    fontSize: "14px",
+                    padding: "12px 24px", 
+                    borderRadius: "6px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    transition: "all 0.2s ease",
+                    textDecoration: "none"
+                  }}
+                  className="hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <ExternalLink size={16} />
+                  View Live Website (Blue Eagle Concrete)
                 </a>
               </div>
             )}
