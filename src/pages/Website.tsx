@@ -1043,11 +1043,11 @@ export default function Website() {
           max-width: 720px;
           margin: 0 auto;
           overflow: hidden;
-          min-height: 600px;
+          min-height: 800px;
         }
         .grow-page-root .calendar-embed iframe {
           width: 100%;
-          min-height: 620px;
+          min-height: 820px;
           border: none;
           display: block;
         }
@@ -1682,24 +1682,14 @@ export default function Website() {
           <div className="calendar-embed" id="booking-calendar">
             <div className="calendar-label">
               <div className="calendar-label-title">Free Contractor Website Demo Call — 15 Minutes</div>
-              <div className="calendar-label-sub">Takeover Marketing · Fill out the form details below</div>
+              <div className="calendar-label-sub">Takeover Marketing · Select a date and time slot below</div>
             </div>
             <iframe
-              src="https://api.leadconnectorhq.com/widget/form/wed9s4lFXacj9QDUrcMn"
-              style={{ width: "100%", height: "100%", border: "none", borderRadius: "3px", minHeight: "570px" }}
-              id="inline-wed9s4lFXacj9QDUrcMn" 
-              data-layout="{'id':'INLINE'}"
-              data-trigger-type="alwaysShow"
-              data-trigger-value=""
-              data-activation-type="alwaysActivated"
-              data-activation-value=""
-              data-deactivation-type="neverDeactivate"
-              data-deactivation-value=""
-              data-form-name="Website Landing Page"
-              data-height="570"
-              data-layout-iframe-id="inline-wed9s4lFXacj9QDUrcMn"
-              data-form-id="wed9s4lFXacj9QDUrcMn"
-              title="Website Landing Page"
+              src="https://api.leadconnectorhq.com/widget/booking/4pTjzWX2CBQuAHAa8jYS"
+              style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "820px" }}
+              scrolling="no"
+              id="4pTjzWX2CBQuAHAa8jYS_1781392504641"
+              title="Calendar Booking"
             />
           </div>
         </div>
