@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Star, ArrowLeft, ArrowRight, X, ExternalLink } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight, X, ExternalLink, Phone } from "lucide-react";
 
 interface DesignItem {
   id: number;
@@ -169,8 +169,8 @@ export default function Website() {
           --red: #ef4444;
           --gray-100: #f5f5f5;
           --gray-200: #e5e5e5;
-          --gray-500: #737373;
-          --gray-700: #404040;
+          --gray-500: #a3a3a3;
+          --gray-700: #666666;
           --gray-900: #171717;
           --section-dark: #111111;
           --section-mid: #1a1a1a;
@@ -304,6 +304,74 @@ export default function Website() {
           background: var(--black);
           padding: 64px 20px 48px;
           text-align: center;
+          position: relative;
+        }
+        .grow-page-root .hero-phone-pulse {
+          position: absolute;
+          top: 24px;
+          right: 24px;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background: rgba(34, 197, 94, 0.12);
+          border: 1.5px solid var(--green);
+          border-radius: 9999px;
+          padding: 10px 18px;
+          color: var(--green);
+          font-weight: 700;
+          font-size: 14px;
+          text-decoration: none;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: 10;
+        }
+        .grow-page-root .hero-phone-pulse:hover {
+          background: var(--green);
+          color: var(--black);
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+        .grow-page-root .hero-phone-pulse:hover .phone-icon-pulse-glow {
+          animation: none;
+          opacity: 0;
+        }
+        .grow-page-root .phone-icon-pulse-circle {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+        }
+        .grow-page-root .phone-icon-pulse-glow {
+          position: absolute;
+          width: 32px;
+          height: 32px;
+          background: rgba(34, 197, 94, 0.45);
+          border-radius: 50%;
+          animation: green-pulse-glow-anim 2s infinite;
+        }
+        @keyframes green-pulse-glow-anim {
+          0% {
+            transform: scale(0.6);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1.9);
+            opacity: 0;
+          }
+        }
+        @media (max-width: 600px) {
+          .grow-page-root .hero {
+            padding-top: 96px !important;
+          }
+          .grow-page-root .hero-phone-pulse {
+            top: 20px;
+            right: 50%;
+            transform: translateX(50%);
+          }
+          .grow-page-root .hero-phone-pulse:hover {
+            transform: translateX(50%) translateY(-2px) scale(1.05);
+          }
         }
         .grow-page-root .hero-eyebrow {
           display: inline-block;
@@ -1107,12 +1175,23 @@ export default function Website() {
 
       {/* HERO */}
       <section className="hero">
+        <a href="tel:+17348658775" className="hero-phone-pulse" id="hero-phone-call-btn">
+          <div className="phone-icon-pulse-circle">
+            <div className="phone-icon-pulse-glow"></div>
+            <Phone size={14} fill="var(--green)" style={{ position: "relative", zIndex: 1 }} />
+          </div>
+          <span>Call Us Directly</span>
+        </a>
         <div className="container-narrow">
           <div className="hero-eyebrow">Built for Contractors</div>
-          <h1>We'll Build Your<br />Contractor Website<br /><span>Free.</span></h1>
-          <p className="hero-sub">
-            We build it, you approve it, and we host it live for 7 days — completely free. Keep it for just <strong>$99/month</strong>. No contracts. No risk.
+          <h1>You're Losing Jobs to<br />Contractors With<br /><span>Better Websites</span></h1>
+          <p className="hero-sub" style={{ color: "#f5f5f5" }}>
+            We'll build yours free in 3 days. Keep it for <strong>$99/month</strong>. No contracts. No Risk.
           </p>
+          <div style={{ marginTop: "16px" }}>
+            <a href="#booking" className="btn-primary">Yes — Build My Free Website Now</a>
+            <p className="btn-subtext">No contracts. Cancel anytime. Unlimited support.</p>
+          </div>
         </div>
       </section>
 
