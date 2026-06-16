@@ -198,8 +198,8 @@ export default function WebsiteCalendar() {
         <Link to="/website" className="logo">
           Takeover <span>Marketing</span>
         </Link>
-        <Link to="/website-thank-you" className="back-home-link">
-          <ArrowLeft size={16} /> Back to Steps
+        <Link to="/website" className="back-home-link">
+          <ArrowLeft size={16} /> Back to Website
         </Link>
       </header>
 

@@ -865,8 +865,8 @@ export default function Website() {
         .grow-page-root .cta-desc strong { color: var(--white); }
         .grow-page-root .btn-primary {
           display: inline-block;
-          background: var(--green);
-          color: var(--white);
+          background: var(--yellow);
+          color: var(--black);
           font-family: 'DM Sans', sans-serif;
           font-size: 18px;
           font-weight: 700;
@@ -874,12 +874,29 @@ export default function Website() {
           border-radius: 3px;
           text-decoration: none;
           letter-spacing: 0.01em;
-          transition: background 0.15s, transform 0.1s;
+          transition: background 0.15s, transform 0.1s, box-shadow 0.3s ease;
           border: none;
           cursor: pointer;
+          animation: yellow-glow-pulse 2.5s infinite ease-in-out;
         }
-        .grow-page-root .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+        .grow-page-root .btn-primary:hover { 
+          background: var(--yellow-dark); 
+          transform: translateY(-1px); 
+          box-shadow: 0 0 24px rgba(245, 197, 24, 0.7); 
+        }
         .grow-page-root .btn-primary:active { transform: translateY(0); }
+
+        @keyframes yellow-glow-pulse {
+          0% {
+            box-shadow: 0 0 4px rgba(245, 197, 24, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 18px rgba(245, 197, 24, 0.6);
+          }
+          100% {
+            box-shadow: 0 0 4px rgba(245, 197, 24, 0.2);
+          }
+        }
         .grow-page-root .btn-subtext {
           font-size: 13px;
           color: var(--gray-500);
@@ -1155,7 +1172,7 @@ export default function Website() {
       <div className="urgency-bar">
         <div className="urgency-content">
           <span className="urgency-dot"></span>
-          <strong>LIMITED SPOTS:</strong> We only take on 5 new contractors per month to ensure quality. <a href="#booking">Check availability →</a>
+          <strong>LIMITED SPOTS:</strong> 3 spots left in June. <a href="#booking">Check availability →</a>
           <span className="urgency-separator">|</span>
           <span className="urgency-rating">
             <span className="rating-label">RATED 4.9</span>
