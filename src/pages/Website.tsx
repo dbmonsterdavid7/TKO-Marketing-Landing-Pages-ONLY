@@ -945,6 +945,48 @@ export default function Website() {
           max-width: 860px;
           margin: 0 auto 24px;
         }
+        @media (max-width: 768px) {
+          .grow-page-root .reviews-grid {
+            display: flex !important;
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 14px !important;
+            padding: 8px 16px 20px !important;
+            margin-left: -16px !important;
+            margin-right: -16px !important;
+            width: calc(100% + 32px) !important;
+            scroll-behavior: smooth !important;
+            scrollbar-width: none !important; /* Hide scrollbar for Firefox */
+          }
+          .grow-page-root .reviews-grid::-webkit-scrollbar {
+            display: none !important; /* Hide scrollbar for Chrome/Safari/Edge */
+          }
+          .grow-page-root .review-card {
+            flex: 0 0 280px !important;
+            scroll-snap-align: center !important;
+            margin-bottom: 0 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+          }
+          .grow-page-root .reviews-mobile-hint {
+            display: block !important;
+            font-size: 11px;
+            color: var(--yellow);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: -8px;
+            margin-bottom: 24px;
+            opacity: 0.82;
+            font-weight: 700;
+          }
+        }
+        @media (min-width: 769px) {
+          .grow-page-root .reviews-mobile-hint {
+            display: none !important;
+          }
+        }
         .grow-page-root .review-card {
           background: #1c1c1c;
           border: 1px solid #2e2e2e;
@@ -1621,6 +1663,7 @@ export default function Website() {
               </p>
             </div>
           </div>
+          <div className="reviews-mobile-hint">← Swipe to read contractor reviews →</div>
 
           <p className="disclaimer">Individual results may vary based on business size, market, and how leads are handled. Results shown above are from real clients and are not a guarantee of any specific outcome.</p>
         </div>
@@ -1746,6 +1789,7 @@ export default function Website() {
               </p>
             </div>
           </div>
+          <div className="reviews-mobile-hint">← Swipe to read contractor reviews →</div>
         </div>
       </section>
 
