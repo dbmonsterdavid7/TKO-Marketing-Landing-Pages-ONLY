@@ -22,9 +22,9 @@ export function Navigation() {
   const accentColor = '#a60724';
 
   const isPrivacyOrTerms = location.pathname.startsWith('/privacy') || location.pathname.startsWith('/terms');
-  const logoTarget = isPrivacyOrTerms ? "/grow" : "/";
-  const featuresTarget = isPrivacyOrTerms ? "/grow" : "/#features";
-  const testimonialsTarget = isPrivacyOrTerms ? "/grow" : "/#testimonials";
+  const logoTarget = isPrivacyOrTerms ? "/roofing" : "/";
+  const featuresTarget = isPrivacyOrTerms ? "/roofing" : "/#features";
+  const testimonialsTarget = isPrivacyOrTerms ? "/roofing" : "/#testimonials";
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${
