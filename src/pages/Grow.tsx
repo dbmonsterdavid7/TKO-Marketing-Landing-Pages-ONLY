@@ -583,8 +583,20 @@ export default function Grow() {
         .grow-page-root footer a { color: #888; text-decoration: underline; }
 
         /* RESPONSIVE */
-        @media (max-width: 600px) {
-          .grow-page-root .hero { padding: 48px 20px 36px; }
+        @media (max-width: 640px) {
+          .grow-page-root .hero { padding: 40px 16px 28px; }
+          .grow-page-root .ghl-hero-section {
+            padding: 0 6px 36px;
+          }
+          .grow-page-root .ghl-hero-section .container {
+            padding: 0;
+            max-width: 100%;
+          }
+          .grow-page-root .ghl-hero-card {
+            border-radius: 6px;
+            margin: 0;
+            width: 100%;
+          }
           .grow-page-root .deliverable { grid-template-columns: 44px 1fr; gap: 14px; }
           .grow-page-root .deliverable-num { font-size: 38px; }
           .grow-page-root .risk-reversal { padding: 24px 20px; }

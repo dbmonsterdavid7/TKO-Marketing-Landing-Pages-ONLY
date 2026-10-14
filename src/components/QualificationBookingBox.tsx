@@ -119,8 +119,8 @@ export default function QualificationBookingBox({
         )}
       </div>
 
-      {/* QUESTION BODIES */}
-      <div className="qb-content">
+      {/* QUESTION BODIES / CALENDAR EMBED */}
+      <div className={`qb-content ${step === "qualified" ? "qb-content-calendar" : ""}`}>
         {/* STEP 1: SERVICE SPECIALTY */}
         {step === 1 && (
           <div className="qb-step-view animate-fadeIn">
@@ -542,12 +542,56 @@ export default function QualificationBookingBox({
           width: 100%;
           min-height: 580px;
         }
+        .qb-content-calendar {
+          padding: 12px 12px 0 12px;
+        }
         .animate-fadeIn {
           animation: qbFadeIn 0.25s ease-in-out;
         }
         @keyframes qbFadeIn {
           from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MOBILE RESPONSIVE TWEAKS */
+        @media (max-width: 640px) {
+          .qb-header {
+            padding: 16px 12px 12px;
+          }
+          .qb-title {
+            font-size: 22px;
+            margin-bottom: 4px;
+          }
+          .qb-qualified-header .qb-title {
+            font-size: 20px;
+            margin-bottom: 2px;
+          }
+          /* Hide all text below headline in qualified state on mobile */
+          .qb-qualified-header .qb-sub {
+            display: none !important;
+          }
+          /* Hide focus, revenue, territory box on mobile */
+          .qb-summary-strip {
+            display: none !important;
+          }
+          .qb-content {
+            padding: 14px 10px;
+            min-height: auto;
+          }
+          /* Give calendar embed 100% full width and room on mobile */
+          .qb-content-calendar {
+            padding: 0 !important;
+          }
+          .qb-calendar-wrapper {
+            min-height: 640px;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+          }
+          .qb-calendar-wrapper iframe {
+            min-height: 640px;
+            border-radius: 0;
+          }
         }
       `}</style>
     </div>
