@@ -584,18 +584,20 @@ export default function Grow() {
 
         /* RESPONSIVE */
         @media (max-width: 640px) {
-          .grow-page-root .hero { padding: 40px 16px 28px; }
+          .grow-page-root .hero { padding: 40px 24px 28px; }
           .grow-page-root .ghl-hero-section {
-            padding: 0 6px 36px;
+            padding: 0 24px 36px;
           }
           .grow-page-root .ghl-hero-section .container {
             padding: 0;
             max-width: 100%;
+            width: 100%;
           }
           .grow-page-root .ghl-hero-card {
-            border-radius: 6px;
-            margin: 0;
+            border-radius: 12px;
+            margin: 0 auto;
             width: 100%;
+            max-width: 100%;
           }
           .grow-page-root .deliverable { grid-template-columns: 44px 1fr; gap: 14px; }
           .grow-page-root .deliverable-num { font-size: 38px; }

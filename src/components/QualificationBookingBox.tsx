@@ -290,7 +290,9 @@ export default function QualificationBookingBox({
           <div className="qb-calendar-wrapper animate-fadeIn">
             <iframe
               src={`https://api.leadconnectorhq.com/widget/form/${formId}`}
-              style={{ width: "100%", height: "100%", border: "none", borderRadius: "3px", minHeight: "580px" }}
+              style={{ width: "100%", border: "none", overflow: "hidden" }}
+              className="qb-calendar-iframe w-full min-h-[1050px] md:min-h-[900px]"
+              scrolling="no"
               id={`ghl-embed-${variant}-${formId}`}
               data-layout="{'id':'INLINE'}"
               data-trigger-type="alwaysShow"
@@ -300,7 +302,7 @@ export default function QualificationBookingBox({
               data-deactivation-type="neverDeactivate"
               data-deactivation-value=""
               data-form-name="Hardscape Qualification & Booking"
-              data-height="580"
+              data-height="900"
               data-layout-iframe-id={`ghl-embed-${variant}-${formId}`}
               data-form-id={formId}
               title="Hardscape Growth Qualification & Booking"
@@ -540,10 +542,16 @@ export default function QualificationBookingBox({
         }
         .qb-calendar-wrapper {
           width: 100%;
-          min-height: 580px;
+          min-height: 900px;
         }
         .qb-content-calendar {
-          padding: 12px 12px 0 12px;
+          padding: 0 !important;
+        }
+        .qb-calendar-iframe {
+          width: 100%;
+          min-height: 900px;
+          border: none;
+          display: block;
         }
         .animate-fadeIn {
           animation: qbFadeIn 0.25s ease-in-out;
@@ -556,7 +564,7 @@ export default function QualificationBookingBox({
         /* MOBILE RESPONSIVE TWEAKS */
         @media (max-width: 640px) {
           .qb-header {
-            padding: 16px 12px 12px;
+            padding: 20px 20px 16px;
           }
           .qb-title {
             font-size: 22px;
@@ -575,22 +583,24 @@ export default function QualificationBookingBox({
             display: none !important;
           }
           .qb-content {
-            padding: 14px 10px;
+            padding: 20px 16px;
             min-height: auto;
           }
-          /* Give calendar embed 100% full width and room on mobile */
+          /* Give calendar embed 100% full width and room matching homepage */
           .qb-content-calendar {
             padding: 0 !important;
           }
           .qb-calendar-wrapper {
-            min-height: 640px;
+            min-height: 1050px;
             padding: 0;
             margin: 0;
             width: 100%;
           }
-          .qb-calendar-wrapper iframe {
-            min-height: 640px;
-            border-radius: 0;
+          .qb-calendar-iframe {
+            min-height: 1050px !important;
+            height: 1050px;
+            width: 100%;
+            border-radius: 0 0 12px 12px;
           }
         }
       `}</style>
