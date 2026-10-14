@@ -591,7 +591,7 @@ export default function Grow() {
 
         /* RESPONSIVE */
         @media (max-width: 640px) {
-          .grow-page-root .hero { padding: 36px 24px 24px; }
+          .grow-page-root .hero { padding: 32px 20px 8px; }
           .grow-page-root .hero-eyebrow {
             display: inline-block;
             font-size: 11px;
@@ -610,7 +610,7 @@ export default function Grow() {
             font-size: 14.5px;
             line-height: 1.45;
             max-width: 95%;
-            margin: 0 auto 24px;
+            margin: 0 auto 12px;
             color: #b5b5b5;
           }
           .grow-page-root .hero-sub .hero-sub-extra {
