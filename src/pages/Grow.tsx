@@ -1,27 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
+import QualificationBookingBox from "../components/QualificationBookingBox";
 
 export default function Grow() {
   useEffect(() => {
-    // Load Wistia scripts
-    const script1 = document.createElement("script");
-    script1.src = "https://fast.wistia.com/player.js";
-    script1.async = true;
-    document.head.appendChild(script1);
-
-    const script2 = document.createElement("script");
-    script2.src = "https://fast.wistia.com/embed/mmo9tw3cxk.js";
-    script2.async = true;
-    script2.type = "module";
-    document.head.appendChild(script2);
-
     // Load LeadConnector form embed script
-    const script3 = document.createElement("script");
-    script3.src = "https://link.msgsndr.com/js/form_embed.js";
-    script3.async = true;
-    script3.type = "text/javascript";
-    document.head.appendChild(script3);
+    const script = document.createElement("script");
+    script.src = "https://link.msgsndr.com/js/form_embed.js";
+    script.async = true;
+    script.type = "text/javascript";
+    document.head.appendChild(script);
 
     // Scroll to section smoothly if a hash link is clicked
     const handleHashClick = (e: MouseEvent) => {
@@ -57,14 +46,8 @@ export default function Grow() {
     document.addEventListener("click", handleHashClick);
     return () => {
       document.removeEventListener("click", handleHashClick);
-      if (document.head.contains(script1)) {
-        document.head.removeChild(script1);
-      }
-      if (document.head.contains(script2)) {
-        document.head.removeChild(script2);
-      }
-      if (document.head.contains(script3)) {
-        document.head.removeChild(script3);
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
       }
     };
   }, []);
@@ -249,68 +232,66 @@ export default function Grow() {
         }
         .grow-page-root .hero-sub strong { color: var(--white); }
 
-        /* VIDEO BLOCK */
-        .grow-page-root .video-section { background: var(--black); padding: 0 20px 48px; text-align: center; }
-        .grow-page-root .video-label {
-          font-size: 13px;
-          font-weight: 600;
+        /* GHL EMBED SECTION (REPLACED VSL) */
+        .grow-page-root .ghl-hero-section {
+          background: var(--black);
+          padding: 0 20px 48px;
+          text-align: center;
+        }
+        .grow-page-root .ghl-hero-card {
+          max-width: 760px;
+          margin: 0 auto;
+          background: #141414;
+          border: 1px solid #2e2e2e;
+          border-radius: 6px;
+          overflow: hidden;
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+        }
+        .grow-page-root .ghl-hero-header {
+          padding: 20px 24px;
+          background: #191919;
+          border-bottom: 1px solid #282828;
+          text-align: center;
+        }
+        .grow-page-root .ghl-badge {
+          display: inline-block;
+          font-size: 11px;
+          font-weight: 700;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--gray-500);
-          margin-bottom: 12px;
+          color: var(--yellow);
+          background: rgba(245, 197, 24, 0.12);
+          border: 1px solid rgba(245, 197, 24, 0.3);
+          padding: 4px 12px;
+          border-radius: 3px;
+          margin-bottom: 8px;
         }
-        .grow-page-root .video-label span { color: var(--yellow); font-weight: 700; }
-        .grow-page-root .video-wrapper {
-          max-width: 720px;
-          margin: 0 auto;
-          border: 2px solid #2a2a2a;
-          border-radius: 4px;
-          overflow: hidden;
-          position: relative;
-          background: #111;
-          aspect-ratio: 16/9;
-          cursor: pointer;
-        }
-        .grow-page-root wistia-player[media-id='mmo9tw3cxk']:not(:defined) {
-          background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/mmo9tw3cxk/swatch');
-          display: block;
-          filter: blur(5px);
-          padding-top: 56.25%;
-        }
-        .grow-page-root wistia-player {
-          display: block;
-          width: 100% !important;
-          height: 100% !important;
-        }
-        .grow-page-root .video-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          gap: 16px;
-          background: #111;
-          font-size: 14px;
-          color: #888;
-        }
-        .grow-page-root .play-btn {
-          width: 72px;
-          height: 72px;
-          background: var(--yellow);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .grow-page-root .play-btn svg { width: 28px; height: 28px; fill: var(--black); margin-left: 4px; }
-        .grow-page-root .sound-note {
-          font-size: 13px;
-          color: var(--gray-500);
-          margin-top: 10px;
+        .grow-page-root .ghl-hero-header h3 {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(22px, 3.5vw, 32px);
           letter-spacing: 0.02em;
+          color: var(--white);
+          text-transform: uppercase;
+          line-height: 1.1;
+          margin-bottom: 4px;
         }
-        .grow-page-root .sound-note span { color: var(--yellow); font-weight: 600; }
+        .grow-page-root .ghl-hero-header p {
+          font-size: 14px;
+          color: #aaa;
+          max-width: 540px;
+          margin: 0 auto;
+        }
+        .grow-page-root .ghl-hero-embed {
+          background: #111;
+          padding: 12px 10px 0;
+          min-height: 580px;
+        }
+        .grow-page-root .ghl-hero-embed iframe {
+          width: 100%;
+          min-height: 580px;
+          border: none;
+          display: block;
+        }
 
         /* FIRST CTA */
         .grow-page-root .first-cta { background: var(--black); padding: 8px 20px 56px; text-align: center; }
@@ -628,7 +609,7 @@ export default function Grow() {
                 />
               ))}
             </span>
-            <span className="rating-count">(126)</span>
+            <span className="rating-count">(34)</span>
           </span>
         </div>
       </div>
@@ -636,59 +617,38 @@ export default function Grow() {
       {/* HERO */}
       <section className="hero">
         <div className="container-narrow">
-          <div className="hero-eyebrow">Built for Contractors</div>
-          <h1>Are You Losing Jobs<br />Because You're <span>Too Busy</span><br />To Follow Up?</h1>
+          <div className="hero-eyebrow">For established hardscape & outdoor living space contractors</div>
+          <h1>Land more hardscaping jobs - <br /><span>or you don't pay</span></h1>
           <p className="hero-sub">
-            We build you a <strong>free professional website</strong> and a done-for-you automated system that responds to every new lead in under 2 minutes — even when you're on the job.
+            Exclusive leads in your service area, never resold. Stop chasing referrals and start running a predictable business with our growth system.
           </p>
         </div>
       </section>
 
-      {/* VIDEO */}
-      <section className="video-section">
+      {/* GOHIGHLEVEL FORM / CALENDAR INTEGRATION WITH CONDITIONAL QUALIFICATION */}
+      <section className="ghl-hero-section" id="booking">
         <div className="container">
-          <p className="video-label">
-            <span>↓ Step 1:</span> Watch This 3-Minute Video First ↓
-          </p>
-          <div className="video-wrapper" id="main-video">
-            <div 
-              style={{ width: '100%', height: '100%' }}
-              dangerouslySetInnerHTML={{ 
-                __html: `<wistia-player media-id="mmo9tw3cxk" aspect="1.7777777777777777"></wistia-player>` 
-              }} 
-            />
+          <div className="ghl-hero-card">
+            <QualificationBookingBox variant="hero" formId="IqILvNxBfXxI0NVdJu5q" />
           </div>
-          <p className="sound-note">🔊 <span>Turn your sound on</span> — this video has audio</p>
         </div>
       </section>
 
-      {/* FIRST CTA (after video) */}
+      {/* FIRST CTA */}
       <section className="first-cta">
         <div className="container-narrow">
           <p className="cta-desc">
-            We build your free website, set up automated follow-up, and have your system running in <strong>under 10 days</strong>. All for $269/month.
+            We drive high-ticket paver, patio, retaining wall, and outdoor living space leads directly through <strong>high-converting Meta and Google ads</strong>.
           </p>
-          <a href="#booking" className="btn-primary">Yes — Build My Free Website Now</a>
-          <p className="btn-subtext">No contracts. Cancel anytime. Setup included.</p>
+          <a href="#booking" className="btn-primary">Claim Your Exclusive Service Area</a>
+          <p className="btn-subtext">100% Exclusive Leads · Territory Protected · Zero Risk Guarantee</p>
         </div>
       </section>
 
       {/* SOCIAL PROOF */}
       <section className="social-proof">
         <div className="container">
-          <p className="section-label">What contractors are saying</p>
-
-          {/* Video Testimonial placeholder - Hidden for now */}
-          {/*
-          <div className="video-testimonial-wrap">
-            <div className="video-testimonial">
-              <div className="play-btn" style={{ width: "56px", height: "56px" }}>
-                <svg viewBox="0 0 24 24" style={{ width: "22px", height: "22px", fill: "#0a0a0a", marginLeft: "3px" }}><path d="M8 5v14l11-7z" /></svg>
-              </div>
-              <p>Video testimonial</p>
-            </div>
-          </div>
-          */}
+          <p className="section-label">What hardscape contractors are saying</p>
 
           {/* Google Review Cards */}
           <div className="reviews-grid">
@@ -697,12 +657,12 @@ export default function Grow() {
                 <div className="reviewer-avatar">WH</div>
                 <div>
                   <div className="reviewer-name">Walter Hernandez</div>
-                  <div className="reviewer-biz">Roofing Contractor</div>
+                  <div className="reviewer-biz">Hardscaping & Masonry</div>
                 </div>
               </div>
               <div className="stars">★★★★★</div>
               <p className="review-text">
-                <span className="review-highlight">I'm very impressed with how quickly everything was handled.</span> The level of professionalism throughout — especially how fast they respond to the phone — has been incredible. Thank you so much.
+                <span className="review-highlight">I'm very impressed with how quickly the leads started coming in.</span> The quality of homeowners looking for patio and retaining wall estimates has been incredible. Fast communication and zero shared lead headaches.
               </p>
             </div>
 
@@ -711,12 +671,12 @@ export default function Grow() {
                 <div className="reviewer-avatar">AP</div>
                 <div>
                   <div className="reviewer-name">Adam Potras</div>
-                  <div className="reviewer-biz">Landscaping</div>
+                  <div className="reviewer-biz">Paver Patios & Outdoor Living</div>
                 </div>
               </div>
               <div className="stars">★★★★★</div>
               <p className="review-text">
-                <span className="review-highlight">Takeover Marketing built my website fast and the system actually works.</span> I was very skeptical at first but I'm very happy with how it turned out. They never stopped updating and improving things.
+                <span className="review-highlight">Takeover Marketing dialed in our Meta ads and the system actually works.</span> I was skeptical about social media ads for hardscaping, but we landed two $20k+ outdoor living jobs in our first month.
               </p>
             </div>
 
@@ -725,12 +685,12 @@ export default function Grow() {
                 <div className="reviewer-avatar">LB</div>
                 <div>
                   <div className="reviewer-name">Louis Barbella</div>
-                  <div className="reviewer-biz">HVAC</div>
+                  <div className="reviewer-biz">Outdoor Living Contractor</div>
                 </div>
               </div>
               <div className="stars">★★★★★</div>
               <p className="review-text">
-                <span className="review-highlight">I found Takeover Marketing by chance and I'm very glad I did.</span> David got right to work and I had a great website and auto set-up quickly. These guys don't fool around — highly recommend.
+                <span className="review-highlight">I found Takeover Marketing while sick of burning cash on Angi.</span> David got right to work launching our Meta and Google ads. We're booked out 6 weeks with great clients. Highly recommend.
               </p>
             </div>
           </div>
@@ -739,12 +699,12 @@ export default function Grow() {
         </div>
       </section>
 
-      {/* WHAT YOU GET */}
+      {/* HOW WE GET YOU MORE JOBS */}
       <section className="what-you-get">
         <div className="container">
           <div className="section-header">
-            <h2>What You Get at <span>$269/Month</span></h2>
-            <p>Everything your business needs to capture and close more jobs — done for you.</p>
+            <h2>How We Get You <span>More Jobs</span></h2>
+            <p>Everything your hardscape & outdoor living business needs to scale with high-ticket projects — done for you.</p>
           </div>
 
           <div className="deliverables">
@@ -752,9 +712,9 @@ export default function Grow() {
             <div className="deliverable">
               <div className="deliverable-num">1</div>
               <div className="deliverable-content">
-                <div className="deliverable-tag">Free — $0 setup</div>
-                <h3>A Professional Contractor Website Built for You</h3>
-                <p>We design and build your website from scratch — <strong>at no extra cost.</strong> Mobile-optimized, fast-loading, and built to convert visitors into calls and form submissions. You own it completely.</p>
+                <div className="deliverable-tag">Meta & Google Ads</div>
+                <h3>Targeted Ad Campaigns for High-Ticket Hardscape Jobs</h3>
+                <p>We deploy proven Facebook, Instagram, and Google ad campaigns dialed in specifically for <strong>paver patios, retaining walls, walkways, fire pits, and luxury outdoor living spaces</strong>. We place your brand directly in front of homeowners actively planning exterior renovations.</p>
               </div>
             </div>
 
@@ -763,9 +723,9 @@ export default function Grow() {
             <div className="deliverable">
               <div className="deliverable-num">2</div>
               <div className="deliverable-content">
-                <div className="deliverable-tag">Included</div>
-                <h3>Automated Lead Follow-Up That Responds in Under 2 Minutes</h3>
-                <p>Every new lead gets an <strong>instant text and email response</strong> the moment they fill out a form or call — even at midnight. No more losing jobs because a competitor called back first.</p>
+                <div className="deliverable-tag">100% Exclusive</div>
+                <h3>Protected Service Area — Zero Shared Leads</h3>
+                <p>Every inquiry generated is <strong>100% exclusive to your business</strong>. We never resell your leads to 4 other local competitors like Angi or HomeAdvisor. When a homeowner submits a request, they deal solely with you.</p>
               </div>
             </div>
 
@@ -774,9 +734,9 @@ export default function Grow() {
             <div className="deliverable">
               <div className="deliverable-num">3</div>
               <div className="deliverable-content">
-                <div className="deliverable-tag">Included</div>
-                <h3>Online Booking System So Jobs Get Scheduled on Autopilot</h3>
-                <p>Your calendar connects directly to the system. Leads can <strong>book their own estimate appointment</strong> without you ever having to call them back manually. Confirmations and reminders go out automatically.</p>
+                <div className="deliverable-tag">Pre-Qualified</div>
+                <h3>Homeowner Pre-Qualification</h3>
+                <p>We capture <strong>project type, scope, timeframe, and budget</strong> upfront so you only talk to high-intent homeowners who are pre-qualified and ready to purchase instead of just price shopping.</p>
               </div>
             </div>
 
@@ -785,20 +745,9 @@ export default function Grow() {
             <div className="deliverable">
               <div className="deliverable-num">4</div>
               <div className="deliverable-content">
-                <div className="deliverable-tag">Included</div>
-                <h3>Missed Call Text-Back So You Never Lose a Lead to Voicemail</h3>
-                <p>When a prospect calls and you can't answer, they <strong>automatically get a text back within 60 seconds</strong> keeping them engaged until you can call them back. Stop losing jobs to voicemail.</p>
-              </div>
-            </div>
-
-            <hr className="divider" />
-
-            <div className="deliverable">
-              <div className="deliverable-num">5</div>
-              <div className="deliverable-content">
-                <div className="deliverable-tag">Included</div>
-                <h3>Review Request Automation to Build Your Google Reputation</h3>
-                <p>After every completed job, your system automatically texts the customer asking for a Google review. <strong>More 5-star reviews = more jobs from organic search.</strong> No manual follow-up needed.</p>
+                <div className="deliverable-tag">Performance Guarantee</div>
+                <h3>Land More Hardscaping Jobs — Or You Don't Pay</h3>
+                <p>We believe in performance-driven partnerships. <strong>If we don't deliver the qualified hardscape opportunities we promise, you don't pay.</strong> We assume the risk so you can focus on building.</p>
               </div>
             </div>
 
@@ -809,92 +758,42 @@ export default function Grow() {
       {/* SECOND CTA */}
       <section className="second-cta">
         <div className="container-narrow" style={{ textAlign: "center" }}>
-          <a href="#booking" className="btn-primary">Get My Free Website + System Now</a>
-          <p className="btn-subtext">We'll answer all of your questions on this quick call.</p>
+          <a href="#booking" className="btn-primary">Claim Your Exclusive Service Area Now</a>
+          <p className="btn-subtext">Check available zip codes and see how many qualified homeowners are searching in your area.</p>
         </div>
       </section>
 
       {/* MORE REVIEWS */}
       <section className="more-reviews">
         <div className="container">
-          <p className="section-label" style={{ textAlign: "center", marginBottom: "28px" }}>More from real contractors</p>
+          <p className="section-label" style={{ textAlign: "center", marginBottom: "28px" }}>More from hardscape & outdoor living pros</p>
           <div className="reviews-grid">
             <div className="review-card">
               <div className="stars">★★★★★</div>
               <p className="review-text" style={{ marginBottom: "14px" }}>
-                "<span className="review-highlight">Before this system I was responding to leads the next morning.</span> Now they get a text immediately. I've already booked 3 extra jobs this month I would have missed."
+                "<span className="review-highlight">Before working with Takeover, I was burning time chasing shared leads.</span> Their Meta ads bring in homeowners with real budgets who want high-end pavers. Already booked 3 large patio projects this month."
               </p>
-              <div className="reviewer-name" style={{ fontSize: "13px" }}>Mike T. — Roofing, Michigan</div>
+              <div className="reviewer-name" style={{ fontSize: "13px" }}>Mike T. — Hardscape & Pavers, Florida</div>
             </div>
             <div className="review-card">
               <div className="stars">★★★★★</div>
               <p className="review-text" style={{ marginBottom: "14px" }}>
-                "<span className="review-highlight">I had a website built before and paid way more than this for nothing.</span> With Takeover it actually brings in leads and follows up automatically. Night and day difference."
+                "<span className="review-highlight">I tried running Facebook and Google ads on my own and got junk.</span> David’s campaigns generate real homeowner appointments directly on my calendar. Completely game-changing for our crew."
               </p>
-              <div className="reviewer-name" style={{ fontSize: "13px" }}>James R. — HVAC, Ohio</div>
+              <div className="reviewer-name" style={{ fontSize: "13px" }}>James R. — Outdoor Living & Masonry, Ohio</div>
             </div>
             <div className="review-card">
               <div className="stars">★★★★★</div>
               <p className="review-text" style={{ marginBottom: "14px" }}>
-                "<span className="review-highlight">The missed call text-back alone is worth the price.</span> I'm on job sites all day and can't always answer. Now I don't lose those people anymore."
+                "<span className="review-highlight">The automated text response alone saved multiple five-figure jobs.</span> I'm operating an excavator all day and can't answer calls. The system books them while I work."
               </p>
-              <div className="reviewer-name" style={{ fontSize: "13px" }}>Tony G. — Landscaping, Indiana</div>
+              <div className="reviewer-name" style={{ fontSize: "13px" }}>Tony G. — Retaining Walls & Hardscaping, Georgia</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* BOOKING SECTION */}
-      <section className="booking-section" id="booking">
-        <div className="container">
-          <div className="booking-header">
-            <h2>Book Your Free Strategy Call</h2>
-            <p>On this 15-minute call we'll answer every question, show you a live demo, and tell you exactly how we'll build your free website.</p>
-          </div>
 
-          <div className="call-promises">
-            <div className="call-promise">
-              <div className="call-promise-icon">🖥️</div>
-              <h4>Live Demo</h4>
-              <p>We'll walk you through the exact system we'll build for your business</p>
-            </div>
-            <div className="call-promise">
-              <div className="call-promise-icon">⚡</div>
-              <h4>No Pressure</h4>
-              <p>No sales tactics. If it's not a fit, we'll tell you — no hard feelings</p>
-            </div>
-            <div className="call-promise">
-              <div className="call-promise-icon">📅</div>
-              <h4>Ready in 10 Days</h4>
-              <p>If we move forward, your website and system are live within 10 days</p>
-            </div>
-          </div>
-
-          <div className="calendar-embed" id="booking-calendar">
-            <div className="calendar-label">
-              <div className="calendar-label-title">Free Contractor Growth Call — 15 Minutes</div>
-              <div className="calendar-label-sub">Takeover Marketing · Fill out the form details below</div>
-            </div>
-            <iframe
-              src="https://api.leadconnectorhq.com/widget/form/IqILvNxBfXxI0NVdJu5q"
-              style={{ width: "100%", height: "100%", border: "none", borderRadius: "3px", minHeight: "570px" }}
-              id="inline-IqILvNxBfXxI0NVdJu5q" 
-              data-layout="{'id':'INLINE'}"
-              data-trigger-type="alwaysShow"
-              data-trigger-value=""
-              data-activation-type="alwaysActivated"
-              data-activation-value=""
-              data-deactivation-type="neverDeactivate"
-              data-deactivation-value=""
-              data-form-name="Wellness Landing Page"
-              data-height="570"
-              data-layout-iframe-id="inline-IqILvNxBfXxI0NVdJu5q"
-              data-form-id="IqILvNxBfXxI0NVdJu5q"
-              title="Wellness Landing Page"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* FOOTER */}
       <footer>
