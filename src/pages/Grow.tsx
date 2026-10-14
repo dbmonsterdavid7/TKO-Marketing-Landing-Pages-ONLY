@@ -213,6 +213,10 @@ export default function Grow() {
           padding: 4px 14px;
           border-radius: 2px;
         }
+        .grow-page-root .hero-eyebrow .eyebrow-line-1,
+        .grow-page-root .hero-eyebrow .eyebrow-line-2 {
+          display: inline;
+        }
         .grow-page-root .hero h1 {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(44px, 8vw, 76px);
@@ -231,6 +235,9 @@ export default function Grow() {
           line-height: 1.5;
         }
         .grow-page-root .hero-sub strong { color: var(--white); }
+        .grow-page-root .hero-sub .hero-sub-extra {
+          display: inline;
+        }
 
         /* GHL EMBED SECTION (REPLACED VSL) */
         .grow-page-root .ghl-hero-section {
@@ -584,7 +591,31 @@ export default function Grow() {
 
         /* RESPONSIVE */
         @media (max-width: 640px) {
-          .grow-page-root .hero { padding: 40px 24px 28px; }
+          .grow-page-root .hero { padding: 36px 24px 24px; }
+          .grow-page-root .hero-eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            line-height: 1.35;
+            padding: 6px 14px;
+            max-width: 320px;
+            margin: 0 auto 16px;
+          }
+          .grow-page-root .hero-eyebrow .eyebrow-line-1,
+          .grow-page-root .hero-eyebrow .eyebrow-line-2 {
+            display: block;
+            white-space: nowrap;
+          }
+          .grow-page-root .hero-sub {
+            font-size: 14.5px;
+            line-height: 1.45;
+            max-width: 95%;
+            margin: 0 auto 24px;
+            color: #b5b5b5;
+          }
+          .grow-page-root .hero-sub .hero-sub-extra {
+            display: none !important;
+          }
           .grow-page-root .ghl-hero-section {
             padding: 0 24px 36px;
           }
@@ -631,10 +662,13 @@ export default function Grow() {
       {/* HERO */}
       <section className="hero">
         <div className="container-narrow">
-          <div className="hero-eyebrow">For established hardscape & outdoor living space contractors</div>
+          <div className="hero-eyebrow">
+            <span className="eyebrow-line-1">For established hardscape &amp;</span>{" "}
+            <span className="eyebrow-line-2">outdoor living space contractors</span>
+          </div>
           <h1>Land more hardscaping jobs - <br /><span>or you don't pay</span></h1>
           <p className="hero-sub">
-            Exclusive leads in your service area, never resold. Stop chasing referrals and start running a predictable business with our growth system.
+            Exclusive leads in your service area, never resold.<span className="hero-sub-extra">{" "}Stop chasing referrals and start running a predictable business with our growth system.</span>
           </p>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight, RotateCcw } from "lucide-react";
 
 interface QualificationBookingBoxProps {
@@ -21,6 +21,37 @@ export default function QualificationBookingBox({
   });
   const [disqualifyReason, setDisqualifyReason] = useState<string>("");
   const [isCheckingTerritory, setIsCheckingTerritory] = useState(false);
+
+  useEffect(() => {
+    // Dynamically load GoHighLevel / LeadConnector form embed script
+    const existing = document.querySelector('script[src="https://link.msgsndr.com/js/form_embed.js"]');
+    if (!existing) {
+      const script = document.createElement("script");
+      script.src = "https://link.msgsndr.com/js/form_embed.js";
+      script.async = true;
+      script.type = "text/javascript";
+      document.body.appendChild(script);
+    }
+
+    const handleMessage = (e: MessageEvent) => {
+      if (typeof e.data === "string" && e.data.includes("setHeight")) {
+        try {
+          const parsed = JSON.parse(e.data);
+          if (parsed && typeof parsed.height === "number" && parsed.height > 200) {
+            const iframe = document.getElementById(`ghl-embed-${variant}-${formId}`);
+            if (iframe && window.innerWidth > 640) {
+              iframe.style.height = `${parsed.height}px`;
+              iframe.style.minHeight = `${parsed.height}px`;
+            }
+          }
+        } catch {
+          // ignore
+        }
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [variant, formId]);
 
   // Step 1 handler - All options valid
   const handleServiceSelect = (service: string) => {
@@ -70,9 +101,11 @@ export default function QualificationBookingBox({
             <div className="qb-badge">
               Step {step} of 3: Contractor Qualification
             </div>
-            <h3 className="qb-title">Check Territory Exclusivity & Calendar</h3>
+            <h3 className="qb-title">
+              See If Your Market is <span className="qb-title-highlight">Available</span>
+            </h3>
             <p className="qb-sub">
-              To protect our contractors, we partner with only 1 business per market. Answer 3 quick questions to see if your service area is open.
+              We only work with 1 hardscape company per market - answer a few quick questions below.
             </p>
             {/* PROGRESS BAR */}
             <div className="qb-progress-track">
@@ -291,7 +324,7 @@ export default function QualificationBookingBox({
             <iframe
               src={`https://api.leadconnectorhq.com/widget/form/${formId}`}
               style={{ width: "100%", border: "none", overflow: "hidden" }}
-              className="qb-calendar-iframe w-full min-h-[1050px] md:min-h-[900px]"
+              className="qb-calendar-iframe w-full min-h-[580px] md:min-h-[580px]"
               scrolling="no"
               id={`ghl-embed-${variant}-${formId}`}
               data-layout="{'id':'INLINE'}"
@@ -302,7 +335,7 @@ export default function QualificationBookingBox({
               data-deactivation-type="neverDeactivate"
               data-deactivation-value=""
               data-form-name="Hardscape Qualification & Booking"
-              data-height="900"
+              data-height="580"
               data-layout-iframe-id={`ghl-embed-${variant}-${formId}`}
               data-form-id={formId}
               title="Hardscape Growth Qualification & Booking"
@@ -344,6 +377,9 @@ export default function QualificationBookingBox({
           line-height: 1.15;
           margin-bottom: 6px;
         }
+        .qb-title-highlight {
+          color: #22c55e;
+        }
         .qb-sub {
           font-size: 14px;
           color: #a3a3a3;
@@ -362,7 +398,8 @@ export default function QualificationBookingBox({
         }
         .qb-progress-bar {
           height: 100%;
-          background: #f5c518;
+          background: #22c55e;
+          box-shadow: 0 0 10px rgba(34, 197, 94, 0.35);
           transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .qb-qualified-badge {
@@ -542,14 +579,15 @@ export default function QualificationBookingBox({
         }
         .qb-calendar-wrapper {
           width: 100%;
-          min-height: 900px;
+          min-height: 580px;
         }
         .qb-content-calendar {
           padding: 0 !important;
+          min-height: auto;
         }
         .qb-calendar-iframe {
           width: 100%;
-          min-height: 900px;
+          min-height: 580px;
           border: none;
           display: block;
         }
