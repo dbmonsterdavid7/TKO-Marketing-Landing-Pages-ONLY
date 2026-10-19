@@ -1,7 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef, type ReactNode, type UIEvent } from "react";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import QualificationBookingBox from "../components/QualificationBookingBox";
+
+function ReviewCarousel({ children, count = 3 }: { children: ReactNode; count?: number }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const scrollPosition = el.scrollLeft;
+    const singleCardWidth = el.clientWidth * 0.85 + 12;
+    if (singleCardWidth > 0) {
+      const idx = Math.round(scrollPosition / singleCardWidth);
+      setActiveIndex(Math.min(Math.max(idx, 0), count - 1));
+    }
+  };
+
+  const scrollTo = (index: number) => {
+    if (!scrollRef.current) return;
+    const singleCardWidth = scrollRef.current.clientWidth * 0.85 + 12;
+    scrollRef.current.scrollTo({
+      left: index * singleCardWidth,
+      behavior: "smooth"
+    });
+    setActiveIndex(index);
+  };
+
+  return (
+    <div className="reviews-carousel-wrapper">
+      <div 
+        ref={scrollRef} 
+        onScroll={handleScroll}
+        className="reviews-grid reviews-carousel"
+      >
+        {children}
+      </div>
+      <div className="reviews-carousel-dots">
+        {Array.from({ length: count }).map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`carousel-dot ${activeIndex === i ? "active" : ""}`}
+            onClick={() => scrollTo(i)}
+            aria-label={`Go to review ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Grow() {
   useEffect(() => {
@@ -72,7 +120,9 @@ export default function Grow() {
           --section-mid: #1a1a1a;
           
           font-family: 'DM Sans', sans-serif;
-          background: var(--black);
+          background-color: var(--black);
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='68' viewBox='0 0 60 60' fill='none' stroke='rgba(255,255,255,0.075)' stroke-width='0.85'%3E%3Cpath d='M0 0L45 45M30 0L60 30M45 15L60 0M15 15L30 0M0 30L15 45M0 60L30 30M30 60L60 30'/%3E%3C/svg%3E");
+          background-repeat: repeat;
           color: var(--white);
           font-size: 16px;
           line-height: 1.6;
@@ -197,7 +247,7 @@ export default function Grow() {
 
         /* HERO */
         .grow-page-root .hero {
-          background: var(--black);
+          background: transparent;
           padding: 64px 20px 48px;
           text-align: center;
         }
@@ -226,6 +276,17 @@ export default function Grow() {
           margin-bottom: 20px;
           text-transform: uppercase;
         }
+        .grow-page-root .hero-headline-dash {
+          display: inline;
+        }
+        @media (max-width: 768px) {
+          .grow-page-root .urgency-bar {
+            display: none !important;
+          }
+          .grow-page-root .hero-headline-dash {
+            display: none !important;
+          }
+        }
         .grow-page-root .hero h1 span { color: var(--yellow); }
         .grow-page-root .hero-sub {
           font-size: clamp(17px, 2.5vw, 20px);
@@ -241,7 +302,7 @@ export default function Grow() {
 
         /* GHL EMBED SECTION (REPLACED VSL) */
         .grow-page-root .ghl-hero-section {
-          background: var(--black);
+          background: transparent;
           padding: 0 20px 48px;
           text-align: center;
         }
@@ -301,7 +362,7 @@ export default function Grow() {
         }
 
         /* FIRST CTA */
-        .grow-page-root .first-cta { background: var(--black); padding: 8px 20px 56px; text-align: center; }
+        .grow-page-root .first-cta { background: transparent; padding: 8px 20px 56px; text-align: center; }
         .grow-page-root .cta-desc {
           font-size: 16px;
           color: #aaa;
@@ -402,6 +463,7 @@ export default function Grow() {
         .grow-page-root .stars { color: var(--yellow); font-size: 14px; letter-spacing: 1px; margin-bottom: 8px; }
         .grow-page-root .review-text { font-size: 14px; color: #bbb; line-height: 1.55; }
         .grow-page-root .review-highlight { color: var(--white); font-weight: 500; }
+        .grow-page-root .reviews-carousel-dots { display: none; }
 
         .grow-page-root .disclaimer {
           font-size: 11px;
@@ -494,7 +556,7 @@ export default function Grow() {
         }
 
         /* MORE REVIEWS */
-        .grow-page-root .more-reviews { background: var(--black); padding: 64px 20px; }
+        .grow-page-root .more-reviews { background: transparent; padding: 64px 20px; }
 
         /* RISK REVERSAL */
         .grow-page-root .risk-reversal {
@@ -581,7 +643,7 @@ export default function Grow() {
 
         /* FOOTER */
         .grow-page-root footer {
-          background: var(--black);
+          background: transparent;
           border-top: 1px solid #1e1e1e;
           padding: 32px 20px;
           text-align: center;
@@ -591,7 +653,13 @@ export default function Grow() {
 
         /* RESPONSIVE */
         @media (max-width: 640px) {
+          .grow-page-root .urgency-bar {
+            display: none !important;
+          }
           .grow-page-root .hero { padding: 32px 20px 8px; }
+          .grow-page-root .hero-headline-dash {
+            display: none !important;
+          }
           .grow-page-root .hero-eyebrow {
             display: inline-block;
             font-size: 11px;
@@ -634,11 +702,102 @@ export default function Grow() {
           .grow-page-root .deliverable-num { font-size: 38px; }
           .grow-page-root .risk-reversal { padding: 24px 20px; }
           .grow-page-root .call-promises { grid-template-columns: 1fr; }
+
+          /* REVIEW CAROUSEL ON MOBILE */
+          .grow-page-root .social-proof {
+            padding: 36px 16px 28px !important;
+          }
+          .grow-page-root .social-proof .section-title {
+            font-size: 26px !important;
+            line-height: 1.2 !important;
+            margin-bottom: 16px !important;
+          }
+          .grow-page-root .social-proof .section-label {
+            margin-bottom: 6px !important;
+            font-size: 11px !important;
+          }
+          .grow-page-root .more-reviews {
+            padding: 36px 16px 28px !important;
+          }
+          .grow-page-root .reviews-carousel-wrapper {
+            position: relative;
+            margin: 0 -16px;
+            padding: 0 16px;
+          }
+          .grow-page-root .reviews-carousel {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            scroll-behavior: smooth !important;
+            gap: 12px !important;
+            padding: 4px 16px 10px !important;
+            margin: 0 -16px 4px !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+          }
+          .grow-page-root .reviews-carousel::-webkit-scrollbar {
+            display: none !important;
+          }
+          .grow-page-root .reviews-carousel .review-card {
+            flex: 0 0 85% !important;
+            min-width: 85% !important;
+            max-width: 85% !important;
+            scroll-snap-align: center !important;
+            scroll-snap-stop: always !important;
+            padding: 18px 16px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            border-radius: 8px !important;
+            background: #181818 !important;
+            border-color: #2b2b2b !important;
+          }
+          .grow-page-root .reviews-carousel .review-header {
+            margin-bottom: 8px !important;
+          }
+          .grow-page-root .reviews-carousel .reviewer-avatar {
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 13px !important;
+          }
+          .grow-page-root .reviews-carousel .stars {
+            margin-bottom: 6px !important;
+            font-size: 13px !important;
+          }
+          .grow-page-root .reviews-carousel .review-text {
+            font-size: 13px !important;
+            line-height: 1.48 !important;
+          }
+          .grow-page-root .reviews-carousel-dots {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+          }
+          .grow-page-root .carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0;
+            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+          }
+          .grow-page-root .carousel-dot.active {
+            width: 22px;
+            background: var(--yellow);
+            box-shadow: 0 0 8px rgba(245, 197, 24, 0.5);
+          }
         }
       ` }} />
 
       {/* URGENCY BAR */}
-      <div className="urgency-bar">
+      <div className="urgency-bar hidden md:block">
         <div className="urgency-content">
           <span className="urgency-dot"></span>
           <strong>LIMITED SPOTS:</strong> We only take on 5 new contractors per month to ensure quality. <a href="#booking">Check availability →</a>
@@ -666,7 +825,7 @@ export default function Grow() {
             <span className="eyebrow-line-1">For established hardscape &amp;</span>{" "}
             <span className="eyebrow-line-2">outdoor living space contractors</span>
           </div>
-          <h1>Land more hardscaping jobs - <br /><span>or you don't pay</span></h1>
+          <h1>Land more hardscaping jobs<span className="hero-headline-dash hidden md:inline"> -</span> <br /><span>or you don't pay</span></h1>
           <p className="hero-sub">
             Exclusive leads in your service area, never resold.<span className="hero-sub-extra">{" "}Stop chasing referrals and start running a predictable business with our growth system.</span>
           </p>
@@ -699,7 +858,7 @@ export default function Grow() {
           <p className="section-label">What hardscape contractors are saying</p>
 
           {/* Google Review Cards */}
-          <div className="reviews-grid">
+          <ReviewCarousel count={3}>
             <div className="review-card">
               <div className="review-header">
                 <div className="reviewer-avatar">WH</div>
@@ -741,7 +900,7 @@ export default function Grow() {
                 <span className="review-highlight">I found Takeover Marketing while sick of burning cash on Angi.</span> David got right to work launching our Meta and Google ads. We're booked out 6 weeks with great clients. Highly recommend.
               </p>
             </div>
-          </div>
+          </ReviewCarousel>
 
           <p className="disclaimer">Individual results may vary based on business size, market, and how leads are handled. Results shown above are from real clients and are not a guarantee of any specific outcome.</p>
         </div>
@@ -784,7 +943,7 @@ export default function Grow() {
               <div className="deliverable-content">
                 <div className="deliverable-tag">Pre-Qualified</div>
                 <h3>Homeowner Pre-Qualification</h3>
-                <p>We capture <strong>project type, scope, timeframe, and budget</strong> upfront so you only talk to high-intent homeowners who are pre-qualified and ready to purchase instead of just price shopping.</p>
+                <p>We capture <strong>project type, scope, and timeframe</strong> upfront so you only talk to high-intent homeowners who are pre-qualified and ready to purchase instead of just price shopping.</p>
               </div>
             </div>
 
@@ -815,7 +974,7 @@ export default function Grow() {
       <section className="more-reviews">
         <div className="container">
           <p className="section-label" style={{ textAlign: "center", marginBottom: "28px" }}>More from hardscape & outdoor living pros</p>
-          <div className="reviews-grid">
+          <ReviewCarousel count={3}>
             <div className="review-card">
               <div className="stars">★★★★★</div>
               <p className="review-text" style={{ marginBottom: "14px" }}>
@@ -833,11 +992,11 @@ export default function Grow() {
             <div className="review-card">
               <div className="stars">★★★★★</div>
               <p className="review-text" style={{ marginBottom: "14px" }}>
-                "<span className="review-highlight">The automated text response alone saved multiple five-figure jobs.</span> I'm operating an excavator all day and can't answer calls. The system books them while I work."
+                "<span className="review-highlight">Their custom landing pages and targeted ads drive serious high-intent traffic.</span> We used to get price shoppers, but now homeowners reach out already knowing what they want and ready to hire. Our close rate has never been higher."
               </p>
               <div className="reviewer-name" style={{ fontSize: "13px" }}>Tony G. — Retaining Walls & Hardscaping, Georgia</div>
             </div>
-          </div>
+          </ReviewCarousel>
         </div>
       </section>
 

@@ -98,9 +98,6 @@ export default function QualificationBookingBox({
       <div className="qb-header">
         {step !== "qualified" && step !== "disqualified" && (
           <>
-            <div className="qb-badge">
-              Step {step} of 3: Contractor Qualification
-            </div>
             <h3 className="qb-title">
               See If Your Market is <span className="qb-title-highlight">Available</span>
             </h3>
@@ -108,11 +105,26 @@ export default function QualificationBookingBox({
               We only work with 1 hardscape company per market - answer a few quick questions below.
             </p>
             {/* PROGRESS BAR */}
-            <div className="qb-progress-track">
-              <div 
-                className="qb-progress-bar" 
-                style={{ width: `${((typeof step === "number" ? step : 3) / 3) * 100}%` }}
-              />
+            <div className="qb-progress-wrapper">
+              <div className="qb-progress-track">
+                <div 
+                  className={`qb-progress-bar ${isCheckingTerritory ? "qb-progress-bar-checking" : ""}`}
+                  style={{ width: `${((typeof step === "number" ? step : 3) / 3) * 100}%` }}
+                >
+                  <span className="qb-progress-glow-head" />
+                </div>
+              </div>
+              <div className="qb-progress-steps-meta">
+                <span className={typeof step === "number" && step >= 1 ? "step-active" : "step-idle"}>
+                  <span className="step-num">1</span> Focus
+                </span>
+                <span className={typeof step === "number" && step >= 2 ? "step-active" : "step-idle"}>
+                  <span className="step-num">2</span> Revenue
+                </span>
+                <span className={typeof step === "number" && step >= 3 ? "step-active" : "step-idle"}>
+                  <span className="step-num">3</span> Territory
+                </span>
+              </div>
             </div>
           </>
         )}
@@ -387,20 +399,108 @@ export default function QualificationBookingBox({
           margin: 0 auto;
           line-height: 1.5;
         }
+        .qb-progress-wrapper {
+          width: 100%;
+          max-width: 340px;
+          margin: 16px auto 0;
+        }
         .qb-progress-track {
           width: 100%;
-          max-width: 320px;
           height: 6px;
-          background: #2a2a2a;
+          background: rgba(255, 255, 255, 0.07);
+          border: 1px solid rgba(255, 255, 255, 0.09);
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
           border-radius: 999px;
-          margin: 16px auto 0;
           overflow: hidden;
+          position: relative;
         }
         .qb-progress-bar {
           height: 100%;
-          background: #22c55e;
-          box-shadow: 0 0 10px rgba(34, 197, 94, 0.35);
-          transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 999px;
+          background: linear-gradient(90deg, #15803d 0%, #22c55e 60%, #4ade80 100%);
+          box-shadow: 0 0 14px rgba(34, 197, 94, 0.55), 0 0 4px rgba(74, 222, 128, 0.8);
+          transition: width 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+          position: relative;
+          overflow: visible;
+        }
+        .qb-progress-bar::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+          animation: qb-shimmer 2.2s infinite ease-in-out;
+        }
+        .qb-progress-glow-head {
+          position: absolute;
+          right: -2px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+          background: #ffffff;
+          border-radius: 50%;
+          box-shadow: 0 0 6px #ffffff, 0 0 10px #4ade80, 0 0 16px #22c55e;
+          z-index: 2;
+        }
+        .qb-progress-bar-checking {
+          animation: qb-pulse-scan 1s infinite alternate ease-in-out;
+        }
+        @keyframes qb-shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(200%); }
+        }
+        @keyframes qb-pulse-scan {
+          0% { filter: brightness(1); }
+          100% { filter: brightness(1.3); }
+        }
+        .qb-progress-steps-meta {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 8px;
+          padding: 0 2px;
+          font-size: 11px;
+          letter-spacing: 0.02em;
+        }
+        .qb-progress-steps-meta span {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          transition: all 0.3s ease;
+        }
+        .qb-progress-steps-meta .step-idle {
+          color: #737373;
+        }
+        .qb-progress-steps-meta .step-active {
+          color: #4ade80;
+          font-weight: 600;
+          text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+        .qb-progress-steps-meta .step-num {
+          display: inline-grid;
+          place-items: center;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          font-size: 9.5px;
+          font-weight: 700;
+          line-height: 1;
+          text-align: center;
+          flex-shrink: 0;
+          box-sizing: border-box;
+        }
+        .qb-progress-steps-meta .step-idle .step-num {
+          background: rgba(255, 255, 255, 0.06);
+          color: #888888;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .qb-progress-steps-meta .step-active .step-num {
+          background: rgba(34, 197, 94, 0.2);
+          color: #4ade80;
+          border: 1px solid rgba(34, 197, 94, 0.5);
         }
         .qb-qualified-badge {
           display: inline-block;
