@@ -194,7 +194,7 @@ export default function Grow() {
           vertical-align: middle;
         }
         .grow-page-root .rating-label {
-          color: #a60724;
+          color: var(--black);
           font-weight: 700;
           text-transform: uppercase;
         }
@@ -206,14 +206,14 @@ export default function Grow() {
         .grow-page-root .rating-stars .star-icon {
           width: 14px;
           height: 14px;
-          color: #a60724;
-          fill: #a60724;
+          color: var(--black);
+          fill: var(--black);
           display: inline-block;
           vertical-align: middle;
           animation: grow-star-pulse 2s infinite ease-in-out;
         }
         .grow-page-root .rating-count {
-          color: #a60724;
+          color: var(--black);
           font-weight: 700;
         }
         @keyframes grow-star-pulse {

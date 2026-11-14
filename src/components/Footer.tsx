@@ -51,7 +51,7 @@ export function Footer() {
         <div className={`text-[10px] leading-relaxed ${textMuted} max-w-4xl`}>
           Takeover Marketing is a trademark or registered trademark of Takeover Marketing Technologies Inc. Any other trademarks are the property of their respective owners. Unless otherwise noted, use of third party logos does not imply endorsement of, sponsorship of, or affiliation with Takeover Marketing.
           <br /><br />
-          Takeover Marketing is a marketing technology company, not an agency. Marketing services are provided by our automated platform and verified partners.
+          Takeover Marketing provides performance-driven marketing, landing pages, and targeted local Meta and Google advertising campaigns for trade contractors and home service businesses.
         </div>
       </div>
     </footer>
