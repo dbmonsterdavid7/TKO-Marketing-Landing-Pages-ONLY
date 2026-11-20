@@ -314,6 +314,10 @@ export default function Grow() {
           border-radius: 6px;
           overflow: hidden;
           box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+          transition: max-width 0.25s ease;
+        }
+        .grow-page-root .ghl-hero-card:has(.qb-calendar-wrapper) {
+          max-width: 728px;
         }
         .grow-page-root .ghl-hero-header {
           padding: 20px 24px;
@@ -836,7 +840,7 @@ export default function Grow() {
       <section className="ghl-hero-section" id="booking">
         <div className="container">
           <div className="ghl-hero-card">
-            <QualificationBookingBox variant="hero" formId="IqILvNxBfXxI0NVdJu5q" />
+            <QualificationBookingBox variant="hero" formId="sSJG2lLmJamOBUgLWT3w" />
           </div>
         </div>
       </section>

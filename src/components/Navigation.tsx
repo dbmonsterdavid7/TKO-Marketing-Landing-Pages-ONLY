@@ -22,9 +22,9 @@ export function Navigation() {
   const accentColor = '#a60724';
 
   const isPrivacyOrTerms = location.pathname.startsWith('/privacy') || location.pathname.startsWith('/terms');
-  const logoTarget = isPrivacyOrTerms ? "/roofing" : "/";
-  const featuresTarget = isPrivacyOrTerms ? "/roofing" : "/#features";
-  const testimonialsTarget = isPrivacyOrTerms ? "/roofing" : "/#testimonials";
+  const logoTarget = isPrivacyOrTerms ? "/grow" : "/";
+  const featuresTarget = "/#features";
+  const testimonialsTarget = "/#testimonials";
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -48,10 +48,12 @@ export function Navigation() {
           />
         </Link>
         
-        <div className={`flex items-center gap-4 md:gap-8 font-medium ${isWellness ? "text-zinc-600" : "text-zinc-400"}`}>
-          <Link to={featuresTarget} className={`text-xs md:text-sm hover:text-${isWellness ? "zinc-900" : "white"} transition-colors`}>Features</Link>
-          <Link to={testimonialsTarget} className={`hidden md:block text-sm hover:text-${isWellness ? "zinc-900" : "white"} transition-colors`}>Testimonials</Link>
-        </div>
+        {!isPrivacyOrTerms && (
+          <div className={`flex items-center gap-4 md:gap-8 font-medium ${isWellness ? "text-zinc-600" : "text-zinc-400"}`}>
+            <Link to={featuresTarget} className={`text-xs md:text-sm hover:text-${isWellness ? "zinc-900" : "white"} transition-colors`}>Features</Link>
+            <Link to={testimonialsTarget} className={`hidden md:block text-sm hover:text-${isWellness ? "zinc-900" : "white"} transition-colors`}>Testimonials</Link>
+          </div>
+        )}
       </nav>
     </header>
   );

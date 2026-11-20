@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -257,7 +258,7 @@ export default function PrivacyPolicy() {
       <div className="privacy-content relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="hero-privacy">
-            <div className="hero-eyebrow">Takeover Marketing LLC</div>
+            <Link to="/grow" className="hero-eyebrow w-fit hover:opacity-80 transition-opacity">Takeover Marketing LLC</Link>
             <h1>Privacy<br />Policy</h1>
             <p className="hero-meta">Last updated: April 03, 2026</p>
           </div>

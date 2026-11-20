@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowRight, RotateCcw } from "lucide-react";
 
 interface QualificationBookingBoxProps {
@@ -10,9 +10,13 @@ interface QualificationBookingBoxProps {
 type QuestionStep = 1 | 2 | 3 | "disqualified" | "qualified";
 
 export default function QualificationBookingBox({
-  formId = "IqILvNxBfXxI0NVdJu5q",
+  formId = "sSJG2lLmJamOBUgLWT3w",
   variant = "hero",
 }: QualificationBookingBoxProps) {
+  const embedId =
+    formId === "sSJG2lLmJamOBUgLWT3w"
+      ? "sSJG2lLmJamOBUgLWT3w_1795208399374"
+      : `ghl-embed-${variant}-${formId}`;
   const [step, setStep] = useState<QuestionStep>(1);
   const [answers, setAnswers] = useState({
     serviceType: "",
@@ -21,37 +25,68 @@ export default function QualificationBookingBox({
   });
   const [disqualifyReason, setDisqualifyReason] = useState<string>("");
   const [isCheckingTerritory, setIsCheckingTerritory] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    // Dynamically load GoHighLevel / LeadConnector form embed script
-    const existing = document.querySelector('script[src="https://link.msgsndr.com/js/form_embed.js"]');
-    if (!existing) {
-      const script = document.createElement("script");
-      script.src = "https://link.msgsndr.com/js/form_embed.js";
-      script.async = true;
-      script.type = "text/javascript";
-      document.body.appendChild(script);
-    }
-
-    const handleMessage = (e: MessageEvent) => {
-      if (typeof e.data === "string" && e.data.includes("setHeight")) {
-        try {
-          const parsed = JSON.parse(e.data);
-          if (parsed && typeof parsed.height === "number" && parsed.height > 200) {
-            const iframe = document.getElementById(`ghl-embed-${variant}-${formId}`);
-            if (iframe && window.innerWidth > 640) {
-              iframe.style.height = `${parsed.height}px`;
-              iframe.style.minHeight = `${parsed.height}px`;
-            }
-          }
-        } catch {
-          // ignore
-        }
+    const applyHeight = (rawHeight: unknown) => {
+      const height = Number(rawHeight);
+      if (Number.isFinite(height) && height > 300 && iframeRef.current) {
+        iframeRef.current.style.height = `${height}px`;
+        iframeRef.current.style.minHeight = `${height}px`;
       }
     };
+
+    const handleMessage = (e: MessageEvent) => {
+      try {
+        let data = e.data;
+        if (typeof data === "string") {
+          if (data.startsWith("{") || data.startsWith("[")) {
+            data = JSON.parse(data);
+          } else {
+            return;
+          }
+        }
+
+        if (Array.isArray(data)) {
+          if (
+            (data[0] === "msgsndr-resize" || data[0] === "setHeight" || data[0] === "msgsndr-iframe-resize") &&
+            data.length >= 2
+          ) {
+            const possibleHeight = typeof data[2] === "number" || typeof data[2] === "string" ? data[2] : data[1];
+            applyHeight(possibleHeight);
+          }
+          return;
+        }
+
+        if (data && typeof data === "object") {
+          if ("height" in data) {
+            applyHeight((data as { height?: unknown }).height);
+          } else if ("frameHeight" in data) {
+            applyHeight((data as { frameHeight?: unknown }).frameHeight);
+          }
+        }
+      } catch {
+        // ignore non-JSON messages
+      }
+    };
+
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [variant, formId]);
+  }, []);
+
+  useEffect(() => {
+    if (step !== "qualified") return;
+
+    // Re-run LeadConnector form_embed.js once the booking iframe is in the DOM
+    const existingScripts = document.querySelectorAll('script[src="https://link.msgsndr.com/js/form_embed.js"]');
+    existingScripts.forEach((el) => el.remove());
+
+    const script = document.createElement("script");
+    script.src = "https://link.msgsndr.com/js/form_embed.js";
+    script.async = true;
+    script.type = "text/javascript";
+    document.body.appendChild(script);
+  }, [step, embedId]);
 
   // Step 1 handler - All options valid
   const handleServiceSelect = (service: string) => {
@@ -92,6 +127,15 @@ export default function QualificationBookingBox({
     setStep(1);
   };
 
+  const buildGhlBookingUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("hardscape_focus", answers.serviceType);
+    params.set("monthly_revenue", answers.monthlyRevenue);
+    params.set("service_territory", answers.territory.trim());
+    const queryString = params.toString().replace(/\+/g, "%20");
+    return `https://api.leadconnectorhq.com/widget/booking/${formId}?${queryString}`;
+  };
+
   return (
     <div className="qualification-box-inner">
       {/* HEADER / STATUS BAR */}
@@ -111,6 +155,9 @@ export default function QualificationBookingBox({
                   className={`qb-progress-bar ${isCheckingTerritory ? "qb-progress-bar-checking" : ""}`}
                   style={{ width: `${((typeof step === "number" ? step : 3) / 3) * 100}%` }}
                 >
+                  <span className="qb-progress-shimmer-mask" aria-hidden="true">
+                    <span className="qb-progress-shimmer" />
+                  </span>
                   <span className="qb-progress-glow-head" />
                 </div>
               </div>
@@ -334,22 +381,13 @@ export default function QualificationBookingBox({
         {step === "qualified" && (
           <div className="qb-calendar-wrapper animate-fadeIn">
             <iframe
-              src={`https://api.leadconnectorhq.com/widget/form/${formId}`}
-              style={{ width: "100%", border: "none", overflow: "hidden" }}
-              className="qb-calendar-iframe w-full min-h-[580px] md:min-h-[580px]"
+              ref={iframeRef}
+              src={buildGhlBookingUrl()}
+              allow="payment"
+              style={{ width: "100%", border: "none", overflow: "hidden", background: "transparent" }}
+              className="qb-calendar-iframe"
               scrolling="no"
-              id={`ghl-embed-${variant}-${formId}`}
-              data-layout="{'id':'INLINE'}"
-              data-trigger-type="alwaysShow"
-              data-trigger-value=""
-              data-activation-type="alwaysActivated"
-              data-activation-value=""
-              data-deactivation-type="neverDeactivate"
-              data-deactivation-value=""
-              data-form-name="Hardscape Qualification & Booking"
-              data-height="580"
-              data-layout-iframe-id={`ghl-embed-${variant}-${formId}`}
-              data-form-id={formId}
+              id={embedId}
               title="Hardscape Growth Qualification & Booking"
             />
           </div>
@@ -366,6 +404,9 @@ export default function QualificationBookingBox({
           background: #191919;
           border-bottom: 1px solid #282828;
           text-align: center;
+        }
+        .qb-header:has(.qb-qualified-header) {
+          padding: 18px 24px 16px;
         }
         .qb-badge {
           display: inline-block;
@@ -419,38 +460,61 @@ export default function QualificationBookingBox({
           border-radius: 999px;
           background: linear-gradient(90deg, #15803d 0%, #22c55e 60%, #4ade80 100%);
           box-shadow: 0 0 14px rgba(34, 197, 94, 0.55), 0 0 4px rgba(74, 222, 128, 0.8);
-          transition: width 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+          transition: width 0.65s cubic-bezier(0.22, 1, 0.36, 1);
           position: relative;
           overflow: visible;
         }
-        .qb-progress-bar::after {
-          content: "";
+        .qb-progress-shimmer-mask {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        .qb-progress-shimmer {
           position: absolute;
           top: 0;
-          left: 0;
-          right: 0;
           bottom: 0;
-          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
-          animation: qb-shimmer 2.2s infinite ease-in-out;
+          left: 0;
+          width: 720px;
+          background-image: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0) 14%,
+            rgba(255, 255, 255, 0.05) 24%,
+            rgba(255, 255, 255, 0.2) 36%,
+            rgba(255, 255, 255, 0.44) 45%,
+            rgba(255, 255, 255, 0.62) 50%,
+            rgba(255, 255, 255, 0.44) 55%,
+            rgba(255, 255, 255, 0.2) 64%,
+            rgba(255, 255, 255, 0.05) 76%,
+            rgba(255, 255, 255, 0) 86%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          background-size: 50% 100%;
+          background-repeat: repeat-x;
+          will-change: transform;
+          animation: qb-shimmer 2.6s linear infinite;
         }
         .qb-progress-glow-head {
           position: absolute;
-          right: -2px;
+          right: -3px;
           top: 50%;
           transform: translateY(-50%);
-          width: 8px;
-          height: 8px;
-          background: #ffffff;
+          width: 10px;
+          height: 10px;
+          background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0.92) 42%, rgba(74, 222, 128, 0) 76%);
           border-radius: 50%;
-          box-shadow: 0 0 6px #ffffff, 0 0 10px #4ade80, 0 0 16px #22c55e;
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 14px rgba(74, 222, 128, 0.85);
           z-index: 2;
+          pointer-events: none;
         }
         .qb-progress-bar-checking {
           animation: qb-pulse-scan 1s infinite alternate ease-in-out;
         }
         @keyframes qb-shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
+          0% { transform: translate3d(-50%, 0, 0); }
+          100% { transform: translate3d(0%, 0, 0); }
         }
         @keyframes qb-pulse-scan {
           0% { filter: brightness(1); }
@@ -679,17 +743,22 @@ export default function QualificationBookingBox({
         }
         .qb-calendar-wrapper {
           width: 100%;
-          min-height: 580px;
+          min-height: 0;
+          background: #141414;
+          overflow: hidden;
         }
         .qb-content-calendar {
           padding: 0 !important;
           min-height: auto;
+          background: #141414;
         }
         .qb-calendar-iframe {
           width: 100%;
-          min-height: 580px;
+          min-height: 460px;
           border: none;
           display: block;
+          background: transparent;
+          overflow: hidden;
         }
         .animate-fadeIn {
           animation: qbFadeIn 0.25s ease-in-out;
@@ -724,19 +793,18 @@ export default function QualificationBookingBox({
             padding: 20px 16px;
             min-height: auto;
           }
-          /* Give calendar embed 100% full width and room matching homepage */
+          /* Give calendar embed 100% full width without extra blank space */
           .qb-content-calendar {
             padding: 0 !important;
           }
           .qb-calendar-wrapper {
-            min-height: 1050px;
+            min-height: 680px;
             padding: 0;
             margin: 0;
             width: 100%;
           }
           .qb-calendar-iframe {
-            min-height: 1050px !important;
-            height: 1050px;
+            min-height: 680px;
             width: 100%;
             border-radius: 0 0 12px 12px;
           }

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function TermsOfUse() {
   useEffect(() => {
@@ -210,7 +211,7 @@ export default function TermsOfUse() {
       <div className="terms-content relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="hero-terms">
-            <div className="hero-eyebrow">Takeover Marketing LLC</div>
+            <Link to="/grow" className="hero-eyebrow w-fit hover:opacity-80 transition-opacity">Takeover Marketing LLC</Link>
             <h1>Terms of<br />Use</h1>
             <p className="hero-meta">Effective Date: February 9, 2026</p>
           </div>
