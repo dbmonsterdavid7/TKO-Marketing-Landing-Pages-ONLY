@@ -53,13 +53,6 @@ function ReviewCarousel({ children, count = 3 }: { children: ReactNode; count?: 
 
 export default function Grow() {
   useEffect(() => {
-    // Prevent iOS/mobile auto-zoom when tapping inputs inside the GHL iframe
-    const viewportMeta = document.querySelector('meta[name="viewport"]');
-    const originalViewport = viewportMeta?.getAttribute("content") || "width=device-width, initial-scale=1.0";
-    if (viewportMeta) {
-      viewportMeta.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0");
-    }
-
     // Load LeadConnector form embed script
     const script = document.createElement("script");
     script.src = "https://link.msgsndr.com/js/form_embed.js";
@@ -101,9 +94,6 @@ export default function Grow() {
     document.addEventListener("click", handleHashClick);
     return () => {
       document.removeEventListener("click", handleHashClick);
-      if (viewportMeta) {
-        viewportMeta.setAttribute("content", originalViewport);
-      }
       if (document.head.contains(script)) {
         document.head.removeChild(script);
       }

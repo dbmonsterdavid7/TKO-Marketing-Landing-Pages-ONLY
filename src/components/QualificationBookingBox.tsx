@@ -26,20 +26,64 @@ export default function QualificationBookingBox({
   const [disqualifyReason, setDisqualifyReason] = useState<string>("");
   const [isCheckingTerritory, setIsCheckingTerritory] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const calendarWrapperRef = useRef<HTMLDivElement>(null);
+  const iframeMountedAtRef = useRef<number>(0);
+  const lastHeightRef = useRef<number>(0);
+  const lastAutoScrollAtRef = useRef<number>(0);
 
   useEffect(() => {
+    const centerCalendarOnMobile = () => {
+      if (window.innerWidth > 768 || !calendarWrapperRef.current) return;
+      const now = Date.now();
+      if (now - lastAutoScrollAtRef.current < 1500) return;
+      lastAutoScrollAtRef.current = now;
+
+      setTimeout(() => {
+        const el = calendarWrapperRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const absoluteTop = rect.top + scrollTop;
+        const targetY =
+          rect.height <= viewportHeight - 32
+            ? absoluteTop - (viewportHeight - rect.height) / 2
+            : absoluteTop - 16;
+
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: "smooth",
+        });
+      }, 150);
+    };
+
     const applyHeight = (rawHeight: unknown) => {
       const height = Number(rawHeight);
       if (Number.isFinite(height) && height > 300 && iframeRef.current) {
         iframeRef.current.style.height = `${height}px`;
         iframeRef.current.style.minHeight = `${height}px`;
+
+        const prevHeight = lastHeightRef.current;
+        lastHeightRef.current = height;
+        const elapsedSinceMount = Date.now() - iframeMountedAtRef.current;
+        if (elapsedSinceMount > 1500 && prevHeight > 0 && Math.abs(height - prevHeight) > 25) {
+          centerCalendarOnMobile();
+        }
       }
     };
 
     const handleMessage = (e: MessageEvent) => {
+      const isGhlOrigin =
+        typeof e.origin === "string" &&
+        (e.origin.includes("leadconnectorhq.com") || e.origin.includes("msgsndr.com"));
+
       try {
         let data = e.data;
         if (typeof data === "string") {
+          if (isGhlOrigin && /scroll|submit/i.test(data) && !data.startsWith("{") && !data.startsWith("[")) {
+            centerCalendarOnMobile();
+            return;
+          }
           if (data.startsWith("{") || data.startsWith("[")) {
             data = JSON.parse(data);
           } else {
@@ -48,8 +92,21 @@ export default function QualificationBookingBox({
         }
 
         if (Array.isArray(data)) {
+          const eventName = typeof data[0] === "string" ? data[0] : "";
           if (
-            (data[0] === "msgsndr-resize" || data[0] === "setHeight" || data[0] === "msgsndr-iframe-resize") &&
+            eventName === "set-sticky-contacts" ||
+            eventName === "msgsndr-form-submit" ||
+            eventName === "msgsndr-scroll" ||
+            eventName === "scrollToTop"
+          ) {
+            if (Date.now() - iframeMountedAtRef.current > 1000) {
+              centerCalendarOnMobile();
+            }
+            return;
+          }
+
+          if (
+            (eventName === "msgsndr-resize" || eventName === "setHeight" || eventName === "msgsndr-iframe-resize") &&
             data.length >= 2
           ) {
             const possibleHeight = typeof data[2] === "number" || typeof data[2] === "string" ? data[2] : data[1];
@@ -59,10 +116,18 @@ export default function QualificationBookingBox({
         }
 
         if (data && typeof data === "object") {
-          if ("height" in data) {
-            applyHeight((data as { height?: unknown }).height);
-          } else if ("frameHeight" in data) {
-            applyHeight((data as { frameHeight?: unknown }).frameHeight);
+          const obj = data as Record<string, unknown>;
+          const actionText = String(obj.type || obj.action || obj.event || obj.message || "");
+          if (isGhlOrigin && /scroll|submit|step/i.test(actionText)) {
+            if (Date.now() - iframeMountedAtRef.current > 1000) {
+              centerCalendarOnMobile();
+            }
+          }
+
+          if ("height" in obj) {
+            applyHeight(obj.height);
+          } else if ("frameHeight" in obj) {
+            applyHeight(obj.frameHeight);
           }
         }
       } catch {
@@ -76,6 +141,10 @@ export default function QualificationBookingBox({
 
   useEffect(() => {
     if (step !== "qualified") return;
+
+    iframeMountedAtRef.current = Date.now();
+    lastHeightRef.current = 0;
+    lastAutoScrollAtRef.current = 0;
 
     // Re-run LeadConnector form_embed.js once the booking iframe is in the DOM
     const existingScripts = document.querySelectorAll('script[src="https://link.msgsndr.com/js/form_embed.js"]');
@@ -379,7 +448,7 @@ export default function QualificationBookingBox({
 
         {/* QUALIFIED SCREEN: GHL CALENDAR EMBED */}
         {step === "qualified" && (
-          <div className="qb-calendar-wrapper animate-fadeIn">
+          <div ref={calendarWrapperRef} className="qb-calendar-wrapper animate-fadeIn">
             <iframe
               ref={iframeRef}
               src={buildGhlBookingUrl()}
