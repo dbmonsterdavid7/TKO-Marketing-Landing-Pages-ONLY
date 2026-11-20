@@ -677,7 +677,7 @@ export default function QualificationBookingBox({
           border-radius: 4px;
           padding: 14px 16px;
           color: #ffffff;
-          font-size: 15px;
+          font-size: 16px;
           font-family: inherit;
           width: 100%;
           outline: none;
