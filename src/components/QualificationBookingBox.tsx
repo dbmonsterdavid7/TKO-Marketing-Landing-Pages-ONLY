@@ -221,16 +221,45 @@ export default function QualificationBookingBox({
     setStep(4);
   };
 
-  // Step 4 handler (Personal & contact info -> booking calendar)
-  const handleContactSubmit = (e: React.FormEvent) => {
+  // Step 4 handler (Personal & contact info -> sync to GHL -> booking calendar)
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!answers.fullName.trim() || !answers.email.trim() || !answers.phone.trim()) return;
+    if (isCheckingTerritory) return;
+
+    const fullName = answers.fullName.trim();
+    const email = answers.email.trim();
+    const phone = answers.phone.trim();
+    const companyName = answers.companyName.trim();
+    if (!fullName || !email || !phone || !companyName) return;
 
     setIsCheckingTerritory(true);
-    setTimeout(() => {
-      setIsCheckingTerritory(false);
-      setStep("qualified");
-    }, 900);
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 3000);
+
+    const syncLead = fetch("/api/ghl/quiz-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        fullName,
+        email,
+        phone,
+        companyName,
+        serviceType: answers.serviceType,
+        monthlyRevenue: answers.monthlyRevenue,
+      }),
+    })
+      .catch(() => undefined)
+      .finally(() => window.clearTimeout(timeoutId));
+
+    const minDelay = new Promise<void>((resolve) => {
+      window.setTimeout(resolve, 900);
+    });
+
+    await Promise.allSettled([syncLead, minDelay]);
+    setIsCheckingTerritory(false);
+    setStep("qualified");
   };
 
   const handleReset = () => {
