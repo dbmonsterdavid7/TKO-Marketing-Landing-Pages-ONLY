@@ -276,36 +276,37 @@ export default function QualificationBookingBox({
               See If You <span className="qb-title-highlight">Qualify</span>
             </h3>
             <p className="qb-sub">
-              We only work with 1 hardscape company per market - answer a few quick questions below.
+              Answer a few quick questions to see if we can help your business.
             </p>
             {/* PROGRESS BAR */}
-            <div className="qb-progress-wrapper">
-              <div className="qb-progress-track">
-                <div 
-                  className={`qb-progress-bar ${isCheckingTerritory ? "qb-progress-bar-checking" : ""}`}
-                  style={{ width: `${((typeof step === "number" ? step : 4) / 4) * 100}%` }}
-                >
-                  <span className="qb-progress-shimmer-mask" aria-hidden="true">
-                    <span className="qb-progress-shimmer" />
-                  </span>
-                  <span className="qb-progress-glow-head" />
+            {(() => {
+              const currentStep = typeof step === "number" ? step : 4;
+              const totalSteps = 4;
+              const completionPercent = Math.round((currentStep / totalSteps) * 100);
+              return (
+                <div className="qb-progress-wrapper">
+                  <div className="qb-progress-header">
+                    <span className="qb-progress-step-label">
+                      Step {currentStep} of {totalSteps}
+                    </span>
+                    <span className="qb-progress-percent">
+                      {completionPercent}%
+                    </span>
+                  </div>
+                  <div className="qb-progress-track">
+                    <div
+                      className={`qb-progress-bar ${isCheckingTerritory ? "qb-progress-bar-checking" : ""}`}
+                      style={{ width: `${completionPercent}%` }}
+                    >
+                      <span className="qb-progress-shimmer-mask" aria-hidden="true">
+                        <span className="qb-progress-shimmer" />
+                      </span>
+                      <span className="qb-progress-glow-head" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="qb-progress-steps-meta">
-                <span className={typeof step === "number" && step >= 1 ? "step-active" : "step-idle"}>
-                  <span className="step-num">1</span> Focus
-                </span>
-                <span className={typeof step === "number" && step >= 2 ? "step-active" : "step-idle"}>
-                  <span className="step-num">2</span> Revenue
-                </span>
-                <span className={typeof step === "number" && step >= 3 ? "step-active" : "step-idle"}>
-                  <span className="step-num">3</span> Company
-                </span>
-                <span className={typeof step === "number" && step >= 4 ? "step-active" : "step-idle"}>
-                  <span className="step-num">4</span> Contact
-                </span>
-              </div>
-            </div>
+              );
+            })()}
           </>
         )}
 
@@ -636,7 +637,7 @@ export default function QualificationBookingBox({
         }
         .qb-title {
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(24px, 4vw, 32px);
+          font-size: clamp(28px, 4.5vw, 38px);
           letter-spacing: 0.02em;
           color: #ffffff;
           text-transform: uppercase;
@@ -733,51 +734,25 @@ export default function QualificationBookingBox({
           0% { filter: brightness(1); }
           100% { filter: brightness(1.3); }
         }
-        .qb-progress-steps-meta {
+        .qb-progress-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-top: 8px;
+          margin-bottom: 7px;
           padding: 0 2px;
-          font-size: 11px;
+        }
+        .qb-progress-step-label {
+          font-size: 12px;
+          font-weight: 500;
+          color: #a3a3a3;
           letter-spacing: 0.02em;
         }
-        .qb-progress-steps-meta span {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          transition: all 0.3s ease;
-        }
-        .qb-progress-steps-meta .step-idle {
-          color: #737373;
-        }
-        .qb-progress-steps-meta .step-active {
-          color: #4ade80;
-          font-weight: 600;
-          text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
-        }
-        .qb-progress-steps-meta .step-num {
-          display: inline-grid;
-          place-items: center;
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          font-size: 9.5px;
+        .qb-progress-percent {
+          font-size: 12px;
           font-weight: 700;
-          line-height: 1;
-          text-align: center;
-          flex-shrink: 0;
-          box-sizing: border-box;
-        }
-        .qb-progress-steps-meta .step-idle .step-num {
-          background: rgba(255, 255, 255, 0.06);
-          color: #888888;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .qb-progress-steps-meta .step-active .step-num {
-          background: rgba(34, 197, 94, 0.2);
           color: #4ade80;
-          border: 1px solid rgba(34, 197, 94, 0.5);
+          letter-spacing: 0.03em;
+          text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
         }
         .qb-qualified-badge {
           display: inline-block;
@@ -1010,7 +985,7 @@ export default function QualificationBookingBox({
             padding: 20px 20px 16px;
           }
           .qb-title {
-            font-size: 22px;
+            font-size: 26px;
             margin-bottom: 4px;
           }
           .qb-qualified-header .qb-title {
