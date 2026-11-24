@@ -315,11 +315,11 @@ export default function QualificationBookingBox({
               return (
                 <div className="qb-progress-wrapper">
                   <div className="qb-progress-header">
+                    <span className="qb-progress-percent">
+                      {completionPercent}% Complete
+                    </span>
                     <span className="qb-progress-step-label">
                       Step {currentStep} of {totalSteps}
-                    </span>
-                    <span className="qb-progress-percent">
-                      {completionPercent}%
                     </span>
                   </div>
                   <div className="qb-progress-track">
