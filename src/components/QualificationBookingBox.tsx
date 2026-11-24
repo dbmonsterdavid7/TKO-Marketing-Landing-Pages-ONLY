@@ -7,7 +7,7 @@ interface QualificationBookingBoxProps {
   onQualified?: () => void;
 }
 
-type QuestionStep = 1 | 2 | 3 | "disqualified" | "qualified";
+type QuestionStep = 1 | 2 | 3 | 4 | "disqualified" | "qualified";
 
 export default function QualificationBookingBox({
   formId = "sSJG2lLmJamOBUgLWT3w",
@@ -21,7 +21,10 @@ export default function QualificationBookingBox({
   const [answers, setAnswers] = useState({
     serviceType: "",
     monthlyRevenue: "",
-    territory: "",
+    companyName: "",
+    fullName: "",
+    email: "",
+    phone: "",
   });
   const [disqualifyReason, setDisqualifyReason] = useState<string>("");
   const [isCheckingTerritory, setIsCheckingTerritory] = useState(false);
@@ -32,13 +35,18 @@ export default function QualificationBookingBox({
   const lastAutoScrollAtRef = useRef<number>(0);
 
   useEffect(() => {
+    const isMobileDevice = () =>
+      window.innerWidth <= 640 ||
+      (window.innerWidth <= 768 && window.matchMedia("(pointer: coarse)").matches);
+
     const centerCalendarOnMobile = () => {
-      if (window.innerWidth > 768 || !calendarWrapperRef.current) return;
+      if (!isMobileDevice() || !calendarWrapperRef.current) return;
       const now = Date.now();
       if (now - lastAutoScrollAtRef.current < 1500) return;
       lastAutoScrollAtRef.current = now;
 
       setTimeout(() => {
+        if (!isMobileDevice()) return;
         const el = calendarWrapperRef.current;
         if (!el) return;
         const rect = el.getBoundingClientRect();
@@ -66,7 +74,7 @@ export default function QualificationBookingBox({
         const prevHeight = lastHeightRef.current;
         lastHeightRef.current = height;
         const elapsedSinceMount = Date.now() - iframeMountedAtRef.current;
-        if (elapsedSinceMount > 1500 && prevHeight > 0 && Math.abs(height - prevHeight) > 25) {
+        if (isMobileDevice() && elapsedSinceMount > 1500 && prevHeight > 0 && Math.abs(height - prevHeight) > 25) {
           centerCalendarOnMobile();
         }
       }
@@ -80,8 +88,18 @@ export default function QualificationBookingBox({
       try {
         let data = e.data;
         if (typeof data === "string") {
-          if (isGhlOrigin && /scroll|submit/i.test(data) && !data.startsWith("{") && !data.startsWith("[")) {
-            centerCalendarOnMobile();
+          if (isGhlOrigin && /scroll/i.test(data) && !data.startsWith("{") && !data.startsWith("[")) {
+            if (isMobileDevice()) {
+              centerCalendarOnMobile();
+            } else {
+              e.stopImmediatePropagation();
+            }
+            return;
+          }
+          if (isGhlOrigin && /submit/i.test(data) && !data.startsWith("{") && !data.startsWith("[")) {
+            if (isMobileDevice()) {
+              centerCalendarOnMobile();
+            }
             return;
           }
           if (data.startsWith("{") || data.startsWith("[")) {
@@ -93,13 +111,19 @@ export default function QualificationBookingBox({
 
         if (Array.isArray(data)) {
           const eventName = typeof data[0] === "string" ? data[0] : "";
-          if (
-            eventName === "set-sticky-contacts" ||
-            eventName === "msgsndr-form-submit" ||
-            eventName === "msgsndr-scroll" ||
-            eventName === "scrollToTop"
-          ) {
-            if (Date.now() - iframeMountedAtRef.current > 1000) {
+          if (/scroll/i.test(eventName)) {
+            if (isMobileDevice()) {
+              if (Date.now() - iframeMountedAtRef.current > 1000) {
+                centerCalendarOnMobile();
+              }
+            } else if (isGhlOrigin) {
+              e.stopImmediatePropagation();
+            }
+            return;
+          }
+
+          if (eventName === "set-sticky-contacts" || eventName === "msgsndr-form-submit") {
+            if (isMobileDevice() && Date.now() - iframeMountedAtRef.current > 1000) {
               centerCalendarOnMobile();
             }
             return;
@@ -118,8 +142,16 @@ export default function QualificationBookingBox({
         if (data && typeof data === "object") {
           const obj = data as Record<string, unknown>;
           const actionText = String(obj.type || obj.action || obj.event || obj.message || "");
-          if (isGhlOrigin && /scroll|submit|step/i.test(actionText)) {
-            if (Date.now() - iframeMountedAtRef.current > 1000) {
+          if (isGhlOrigin && /scroll/i.test(actionText)) {
+            if (isMobileDevice()) {
+              if (Date.now() - iframeMountedAtRef.current > 1000) {
+                centerCalendarOnMobile();
+              }
+            } else {
+              e.stopImmediatePropagation();
+            }
+          } else if (isGhlOrigin && /submit|step/i.test(actionText)) {
+            if (isMobileDevice() && Date.now() - iframeMountedAtRef.current > 1000) {
               centerCalendarOnMobile();
             }
           }
@@ -146,6 +178,14 @@ export default function QualificationBookingBox({
     lastHeightRef.current = 0;
     lastAutoScrollAtRef.current = 0;
 
+    const isMobile =
+      window.innerWidth <= 640 ||
+      (window.innerWidth <= 768 && window.matchMedia("(pointer: coarse)").matches);
+
+    if (!isMobile && iframeRef.current) {
+      iframeRef.current.scrollIntoView = () => {};
+    }
+
     // Re-run LeadConnector form_embed.js once the booking iframe is in the DOM
     const existingScripts = document.querySelectorAll('script[src="https://link.msgsndr.com/js/form_embed.js"]');
     existingScripts.forEach((el) => el.remove());
@@ -163,7 +203,7 @@ export default function QualificationBookingBox({
     setStep(2);
   };
 
-  // Step 2 handler - Revenue qualification ($0 - $25k/mo disqualifies)
+  // Step 2 handler - Revenue qualification (Under $40k/mo disqualifies)
   const handleRevenueSelect = (revenue: string, isDisqualified = false, reason = "") => {
     setAnswers((prev) => ({ ...prev, monthlyRevenue: revenue }));
     if (isDisqualified) {
@@ -174,10 +214,17 @@ export default function QualificationBookingBox({
     }
   };
 
-  // Step 3 handler (Territory check)
-  const handleTerritorySubmit = (e: React.FormEvent) => {
+  // Step 3 handler (Company name)
+  const handleCompanySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!answers.territory.trim()) return;
+    if (!answers.companyName.trim()) return;
+    setStep(4);
+  };
+
+  // Step 4 handler (Personal & contact info -> booking calendar)
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!answers.fullName.trim() || !answers.email.trim() || !answers.phone.trim()) return;
 
     setIsCheckingTerritory(true);
     setTimeout(() => {
@@ -190,7 +237,10 @@ export default function QualificationBookingBox({
     setAnswers({
       serviceType: "",
       monthlyRevenue: "",
-      territory: "",
+      companyName: "",
+      fullName: "",
+      email: "",
+      phone: "",
     });
     setDisqualifyReason("");
     setStep(1);
@@ -198,9 +248,20 @@ export default function QualificationBookingBox({
 
   const buildGhlBookingUrl = () => {
     const params = new URLSearchParams(window.location.search);
+    const trimmedName = answers.fullName.trim();
+    const nameParts = trimmedName.split(/\s+/);
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ");
+
     params.set("hardscape_focus", answers.serviceType);
     params.set("monthly_revenue", answers.monthlyRevenue);
-    params.set("service_territory", answers.territory.trim());
+    params.set("company_namellc", answers.companyName.trim());
+    params.set("full_name", trimmedName);
+    params.set("name", trimmedName);
+    if (firstName) params.set("first_name", firstName);
+    if (lastName) params.set("last_name", lastName);
+    params.set("email", answers.email.trim());
+    params.set("phone", answers.phone.trim());
     const queryString = params.toString().replace(/\+/g, "%20");
     return `https://api.leadconnectorhq.com/widget/booking/${formId}?${queryString}`;
   };
@@ -212,7 +273,7 @@ export default function QualificationBookingBox({
         {step !== "qualified" && step !== "disqualified" && (
           <>
             <h3 className="qb-title">
-              See If Your Market is <span className="qb-title-highlight">Available</span>
+              See If You <span className="qb-title-highlight">Qualify</span>
             </h3>
             <p className="qb-sub">
               We only work with 1 hardscape company per market - answer a few quick questions below.
@@ -222,7 +283,7 @@ export default function QualificationBookingBox({
               <div className="qb-progress-track">
                 <div 
                   className={`qb-progress-bar ${isCheckingTerritory ? "qb-progress-bar-checking" : ""}`}
-                  style={{ width: `${((typeof step === "number" ? step : 3) / 3) * 100}%` }}
+                  style={{ width: `${((typeof step === "number" ? step : 4) / 4) * 100}%` }}
                 >
                   <span className="qb-progress-shimmer-mask" aria-hidden="true">
                     <span className="qb-progress-shimmer" />
@@ -238,7 +299,10 @@ export default function QualificationBookingBox({
                   <span className="step-num">2</span> Revenue
                 </span>
                 <span className={typeof step === "number" && step >= 3 ? "step-active" : "step-idle"}>
-                  <span className="step-num">3</span> Territory
+                  <span className="step-num">3</span> Company
+                </span>
+                <span className={typeof step === "number" && step >= 4 ? "step-active" : "step-idle"}>
+                  <span className="step-num">4</span> Contact
                 </span>
               </div>
             </div>
@@ -248,18 +312,18 @@ export default function QualificationBookingBox({
         {step === "qualified" && (
           <div className="qb-qualified-header">
             <div className="qb-qualified-badge">
-              Territory Available
+              You Qualify
             </div>
-            <h3 className="qb-title text-white">Service Area Approved for {answers.territory || "Your Market"}</h3>
+            <h3 className="qb-title text-white">Application Approved for {answers.companyName || "Your Company"}</h3>
             <p className="qb-sub">
-              You meet our client criteria! Select a convenient 15-minute time below to claim your territory and review your custom growth plan.
+              You meet our client criteria! Select a convenient 15-minute time below to review your custom growth plan.
             </p>
             <div className="qb-summary-strip">
               <span><strong>Focus:</strong> {answers.serviceType}</span>
               <span className="dot">•</span>
               <span><strong>Revenue:</strong> {answers.monthlyRevenue}</span>
               <span className="dot">•</span>
-              <span><strong>Territory:</strong> {answers.territory}</span>
+              <span><strong>Company:</strong> {answers.companyName}</span>
               <button onClick={handleReset} className="qb-edit-btn" title="Change Answers">
                 <RotateCcw className="w-3 h-3 inline mr-1" /> Edit
               </button>
@@ -345,83 +409,163 @@ export default function QualificationBookingBox({
                 className="qb-option-card"
                 onClick={() =>
                   handleRevenueSelect(
-                    "$0 - $25k/mo",
+                    "Under $40k/mo",
                     true,
-                    "Our performance-based growth system requires an existing operational foundation of at least $25k/month to ensure we can consistently scale your crew with high-ticket projects under our guarantee."
+                    "Our performance-based growth system requires an existing operational foundation of at least $40k/month to ensure we can consistently scale your crew with high-ticket projects under our guarantee."
                   )
                 }
               >
-                <div className="qb-option-title">$0 - $25k/mo</div>
+                <div className="qb-option-title">Under $40k/mo</div>
               </button>
 
               <button
                 type="button"
                 className="qb-option-card"
-                onClick={() => handleRevenueSelect("$25k - $50k/mo")}
+                onClick={() => handleRevenueSelect("$40k - $100k/mo")}
               >
-                <div className="qb-option-title">$25k - $50k/mo</div>
+                <div className="qb-option-title">$40k - $100k/mo</div>
               </button>
 
               <button
                 type="button"
                 className="qb-option-card"
-                onClick={() => handleRevenueSelect("$50k - $100k/mo")}
+                onClick={() => handleRevenueSelect("$100k - $250k/mo")}
               >
-                <div className="qb-option-title">$50k - $100k/mo</div>
+                <div className="qb-option-title">$100k - $250k/mo</div>
               </button>
 
               <button
                 type="button"
                 className="qb-option-card"
-                onClick={() => handleRevenueSelect("$100k+/mo")}
+                onClick={() => handleRevenueSelect("$250k - $1m/mo")}
               >
-                <div className="qb-option-title">$100k+/mo</div>
+                <div className="qb-option-title">$250k - $1m/mo</div>
+              </button>
+
+              <button
+                type="button"
+                className="qb-option-card"
+                onClick={() => handleRevenueSelect("$1m/mo+")}
+              >
+                <div className="qb-option-title">$1m/mo+</div>
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 3 (formerly step 4): TERRITORY AVAILABILITY CHECK */}
+        {/* STEP 3: COMPANY NAME */}
         {step === 3 && (
-          <form onSubmit={handleTerritorySubmit} className="qb-step-view animate-fadeIn">
+          <form onSubmit={handleCompanySubmit} className="qb-step-view animate-fadeIn">
             <div className="flex justify-between items-center mb-2">
               <label className="qb-question-label mb-0">
-                What city, metro area, or ZIP codes do you service?
+                What is your company name?
               </label>
               <button type="button" onClick={() => setStep(2)} className="text-xs text-neutral-400 hover:text-white transition">
                 ← Back
               </button>
             </div>
             <p className="text-xs text-neutral-400 mb-4">
-              We check your service territory against our current roster to make sure there are no competing contractors in your market.
+              We use this to confirm market exclusivity and prepare your custom territory audit before our call.
             </p>
             <div className="qb-input-group">
               <input
                 type="text"
-                placeholder="e.g. Tampa & St. Petersburg, FL (or ZIP 33602)"
-                value={answers.territory}
-                onChange={(e) => setAnswers({ ...answers, territory: e.target.value })}
+                placeholder="e.g. Summit Hardscapes LLC"
+                value={answers.companyName}
+                onChange={(e) => setAnswers({ ...answers, companyName: e.target.value })}
                 required
                 className="qb-text-input"
                 autoFocus
               />
               <button
                 type="submit"
-                disabled={isCheckingTerritory || !answers.territory.trim()}
+                disabled={!answers.companyName.trim()}
                 className="qb-submit-btn"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* STEP 4: PERSONAL INFO & CONTACT */}
+        {step === 4 && (
+          <form onSubmit={handleContactSubmit} className="qb-step-view animate-fadeIn">
+            <div className="flex justify-between items-center mb-2">
+              <label className="qb-question-label mb-0">
+                Where should we send your custom growth plan?
+              </label>
+              <button type="button" onClick={() => setStep(3)} className="text-xs text-neutral-400 hover:text-white transition">
+                ← Back
+              </button>
+            </div>
+            <p className="text-xs text-neutral-400 mb-4">
+              Enter your contact details below to unlock our calendar and lock in your consultation.
+            </p>
+            <div className="qb-input-group">
+              <div>
+                <label htmlFor="qb-full-name" className="qb-field-label">Full Name</label>
+                <input
+                  id="qb-full-name"
+                  type="text"
+                  placeholder="John Smith"
+                  autoComplete="name"
+                  value={answers.fullName}
+                  onChange={(e) => setAnswers({ ...answers, fullName: e.target.value })}
+                  required
+                  className="qb-text-input"
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label htmlFor="qb-email" className="qb-field-label">Email</label>
+                <input
+                  id="qb-email"
+                  type="email"
+                  placeholder="john@company.com"
+                  autoComplete="email"
+                  value={answers.email}
+                  onChange={(e) => setAnswers({ ...answers, email: e.target.value })}
+                  required
+                  className="qb-text-input"
+                />
+              </div>
+              <div>
+                <label htmlFor="qb-phone" className="qb-field-label">Phone Number</label>
+                <input
+                  id="qb-phone"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  autoComplete="tel"
+                  value={answers.phone}
+                  onChange={(e) => setAnswers({ ...answers, phone: e.target.value })}
+                  required
+                  className="qb-text-input"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isCheckingTerritory || !answers.fullName.trim() || !answers.email.trim() || !answers.phone.trim()}
+                className="qb-submit-btn qb-submit-btn-green"
               >
                 {isCheckingTerritory ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    Checking Territory...
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Loading Calendar...
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
-                    Verify Territory
+                    Submit
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 )}
               </button>
+              <p className="qb-submit-helper">
+                Take a few seconds and pick a time that suits you.
+              </p>
             </div>
           </form>
         )}
@@ -511,7 +655,7 @@ export default function QualificationBookingBox({
         }
         .qb-progress-wrapper {
           width: 100%;
-          max-width: 340px;
+          max-width: 380px;
           margin: 16px auto 0;
         }
         .qb-progress-track {
@@ -755,6 +899,13 @@ export default function QualificationBookingBox({
           border-color: #f5c518;
           box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.2);
         }
+        .qb-field-label {
+          display: block;
+          font-size: 12px;
+          font-weight: 600;
+          color: #d4d4d4;
+          margin-bottom: 6px;
+        }
         .qb-submit-btn {
           background: #f5c518;
           color: #0a0a0a;
@@ -772,6 +923,20 @@ export default function QualificationBookingBox({
         .qb-submit-btn:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+        .qb-submit-btn-green {
+          background: #22c55e;
+          color: #ffffff;
+          margin-top: 4px;
+        }
+        .qb-submit-btn-green:hover:not(:disabled) {
+          background: #16a34a;
+        }
+        .qb-submit-helper {
+          font-size: 12px;
+          color: #888888;
+          text-align: center;
+          margin-top: 2px;
         }
         .qb-disqualified-view {
           max-width: 540px;
@@ -815,6 +980,7 @@ export default function QualificationBookingBox({
           min-height: 0;
           background: #141414;
           overflow: hidden;
+          overflow-anchor: none;
         }
         .qb-content-calendar {
           padding: 0 !important;
@@ -828,6 +994,7 @@ export default function QualificationBookingBox({
           display: block;
           background: transparent;
           overflow: hidden;
+          overflow-anchor: none;
         }
         .animate-fadeIn {
           animation: qbFadeIn 0.25s ease-in-out;

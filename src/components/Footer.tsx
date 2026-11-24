@@ -6,6 +6,7 @@ export function Footer() {
   const hostname = window.location.hostname;
   const isWellness = location.pathname === '/wellness' || hostname.startsWith('wellness.');
   const isContractors = location.pathname === '/contractors' || location.pathname === '/';
+  const isPrivacyOrTerms = location.pathname.startsWith('/privacy') || location.pathname.startsWith('/terms');
   const isLightPage = isWellness || isContractors;
 
   const themeClasses = isLightPage 
@@ -43,8 +44,12 @@ export function Footer() {
             <span>© 2026 Takeover Marketing Inc.</span>
             <Link to="/privacy-policy" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Privacy Policy</Link>
             <Link to="/terms-of-use" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Terms of Use</Link>
-            <Link to="/wellness" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Wellness</Link>
-            <Link to="/contractors" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Contractors</Link>
+            {!isPrivacyOrTerms && (
+              <>
+                <Link to="/wellness" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Wellness</Link>
+                <Link to="/contractors" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Contractors</Link>
+              </>
+            )}
             <Link to="/grow" className={`hover:text-${isLightPage ? "zinc-900" : "white"} transition-colors`}>Grow</Link>
           </div>
         </div>
